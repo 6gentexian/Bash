@@ -1,0 +1,511 @@
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+#################################################################################
+Color_Off='\e[0m'       # Text Reset
+
+# Regular Colors
+Black='\e[0;30m'        # Black
+Red='\e[0;31m'          # Red
+Green='\e[0;32m'        # Green
+Yellow='\e[0;33m'       # Yellow
+Blue='\e[0;34m'         # Blue
+Purple='\e[0;35m'       # Purple
+Cyan='\e[0;36m'         # Cyan
+White='\e[0;37m'        # White
+
+# Bold
+BBlack='\e[1;30m'       # Black
+BRed='\e[1;31m'         # Red
+BGreen='\e[1;32m'       # Green
+BYellow='\e[1;33m'      # Yellow
+BBlue='\e[1;34m'        # Blue
+BPurple='\e[1;35m'      # Purple
+BCyan='\e[1;36m'        # Cyan
+BWhite='\e[1;37m'       # White
+
+# Underline
+UBlack='\e[4;30m'       # Black
+URed='\e[4;31m'         # Red
+UGreen='\e[4;32m'       # Green
+UYellow='\e[4;33m'      # Yellow
+UBlue='\e[4;34m'        # Blue
+UPurple='\e[4;35m'      # Purple
+UCyan='\e[4;36m'        # Cyan
+UWhite='\e[4;37m'       # White
+
+# Background
+On_Black='\e[40m'       # Black
+On_Red='\e[41m'         # Red
+On_Green='\e[42m'       # Green
+On_Yellow='\e[43m'      # Yellow
+On_Blue='\e[44m'        # Blue
+On_Purple='\e[45m'      # Purple
+On_Cyan='\e[46m'        # Cyan
+On_White='\e[47m'       # White
+
+# High Intensity
+IBlack='\e[0;90m'       # Black
+IRed='\e[0;91m'         # Red
+IGreen='\e[0;92m'       # Green
+IYellow='\e[0;93m'      # Yellow
+IBlue='\e[0;94m'        # Blue
+IPurple='\e[0;95m'      # Purple
+ICyan='\e[0;96m'        # Cyan
+IWhite='\e[0;97m'       # White
+
+# Bold High Intensity
+BIBlack='\e[1;90m'      # Black
+BIRed='\e[1;91m'        # Red
+BIGreen='\e[1;92m'      # Green
+BIYellow='\e[1;93m'     # Yellow
+BIBlue='\e[1;94m'       # Blue
+BIPurple='\e[1;95m'     # Purple
+BICyan='\e[1;96m'       # Cyan
+BIWhite='\e[1;97m'      # White
+
+# High Intensity backgrounds
+On_IBlack='\e[0;100m'   # Black
+On_IRed='\e[0;101m'     # Red
+On_IGreen='\e[0;102m'   # Green
+On_IYellow='\e[0;103m'  # Yellow
+On_IBlue='\e[0;104m'    # Blue
+On_IPurple='\e[0;105m'  # Purple
+On_ICyan='\e[0;106m'    # Cyan
+On_IWhite='\e[0;107m'   # White
+
+RESET='\e[0m'           # Text Reset
+
+ALERT=${BWhite}${On_Red} # Bold White on red background
+###########################################
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+# don't put duplicate lines in the history. See bash(1) for more options
+# ... or force ignoredups and ignorespace
+HISTCONTROL=ignoredups:ignorespace
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=10000
+HISTFILESIZE=20000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-256color)
+	color_prompt=yes
+	;;
+esac
+
+
+## - COLOR PROMPT - #############################################################
+#-------------------------------------------------------------
+# Shell Prompt - for many examples, see:
+#       http://www.debian-administration.org/articles/205
+#       http://www.askapache.com/linux/bash-power-prompt.html
+#       http://tldp.org/HOWTO/Bash-Prompt-HOWTO
+#       https://github.com/nojhan/liquidprompt
+#-------------------------------------------------------------
+# Current Format: [TIME USER@HOST PWD] >
+# USER:
+#    Green $   == normal user
+#    Red #     == root
+# HOST:
+#    pwd $     == local session
+#    pwd [SSH] == secured remote connection (via ssh)
+#    Red [FTP] == unsecured remote connection
+# PWD:
+#    Blue      == more than 10% free disk space
+#    Orange    == less than 10% free disk space
+#    Red       == current user does not have write privileges
+#################################################################################
+# User type:
+#SU="\[${BRed}\] #\[${RESET}\]"           # User is root.
+SU="\[${BGreen}\] $\[${RESET}\]"         # User is normal (well ... most of us are).
+
+# Test connection type:
+if [ -n "$SSH_CLIENT" ]; then
+    CNX="\[${BYellow}\] [SSH]\[${RESET}\]"     # Connected on remote machine, via ssh (good).
+fi
+if [ -n "${SSH_CONNECTION}" ]; then
+    CNX="\[${BYellow}\] [SSH]\[${RESET}\]"     # Connected on remote machine, via ssh (good).
+elif [[ "${DISPLAY%%:0*}" != "" ]]; then
+    CNX="\[${BRed}\] [FTP]\[${RESET}\]"        # Connected on remote machine, not via ssh (bad).
+else
+    CNX=""                                     # Connected on local machine.
+fi
+
+# Returns a color according to free disk space in $PWD.
+function disk_color()
+{
+    if [ ! -w "${PWD}" ] ; then
+	echo -en ${BRed} # No 'write' privilege in the current directory.
+    elif [ -s "${PWD}" ] ; then
+	local used=$(command df -P "$PWD" | awk 'END {print $5} {sub(/%/,"")}')
+	if [ ${used} -gt 95 ]; then
+	    echo -en ${ALERT}           # Disk almost full (>95%).
+	elif [ ${used} -gt 90 ]; then
+	    echo -en ${BRed}            # Free disk space almost gone.
+	elif [ ${used} -gt 75 ]; then
+	    echo -en ${BYellow}            # Free disk space almost gone.
+	else
+	    echo -en ${BBlue}           # Free disk space is ok.
+	fi
+    else
+	echo -en ${BCyan}    # Current directory is size '0' (like /proc, /sys etc).
+    fi
+}
+
+#PS1='\[\e[1;34m\]\w\[\e[m\] \[\e[1;32m\]\$\[\e[m\] \[\e[1;37m\]'
+#PS1="\[${BBlue}\]\w\[\e[m\] \[${BGreen}\]\$\[\e[m\] \[${BWhite}\]"
+#PS1="\[${BBlue}\]\w\[${RESET}\]\[${BPurple}\]\$(parse_git_branch)\[${RESET}\]${SU}${CNX} \[${BWhite}\]"
+parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
+PS1="\[\$(disk_color)\]\w\[${RESET}\]\[${BPurple}\]\$(parse_git_branch)\[${RESET}\]${SU}${CNX} \[${BWhite}\]"
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]${PS1}"  # prev: \w\a]$PS1"
+	;;
+	*)
+    ;;
+esac
+
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+
+# some more ls aliases ----- ####################################################
+alias ll='ls -alF --group-directories-first -A'
+
+#-------------------------------------------------------------
+# The 'ls' family (this assumes you use a recent GNU ls).
+#-------------------------------------------------------------
+# Add colors for filetype and  human-readable sizes by default on 'ls':
+alias ls='ls -h --color'
+alias lx='ls -lXB'         #  Sort by extension.
+alias lk='ls -lSr'         #  Sort by size, biggest last.
+alias lt='ls -ltr'         #  Sort by date, most recent last.
+alias lc='ls -ltcr'        #  Sort by/show change time,most recent last.
+alias la='ls -ltur'        #  Sort by/show access time,most recent last.
+
+# The ubiquitous 'll': directories first, with alphanumeric sorting:
+alias lr='ll -R'           #  Recursive ls.
+alias tree='tree -Csuh'    #  Nice alternative to 'recursive ls' ...
+
+alias home='cd ~'
+alias em='emacs -nw'
+alias EM='em ~/.emacs'
+alias suem='sudo emacs -nw'
+
+alias RHOME='cd /usr/lib/R/'
+alias RPROFILE='em ~/Dropbox/R/Rprofile.site'
+alias RENVIRON='em ~/Dropbox/R/Renviron'
+
+alias rebootWeb='sudo dhclient'
+alias BASHRC='em ~/.bashrc'
+alias SOURCE='source ~/.bashrc'
+alias REBOOT='systemctl reboot'
+alias POWEROFF='systemctl poweroff'
+alias terminator_ebg='terminator -m -b -l ebg &'
+
+alias te='top -u edward'
+alias tr='top -u root'
+alias tt='top'
+alias cls='clear'
+
+alias GG="gitg --all"
+alias GA="git add"
+alias GC="git checkout"
+alias GS="git status"
+alias GB="git branch"
+alias GL="git ls-files"
+alias GM="git commit -m "
+
+# hint to run wine #
+# wine "/home/edward/.wine/drive_c/Program Files (x86)/WebEx/WebEx/500/nbrplayer.exe"
+
+#alias PRINT='lpr -P "Dell Laser Printer 1710n"'
+#alias PRINT='lpr -p -P "delllaserprinter1710"'
+
+## ubuntu specific--Make it shorter
+#alias INSTALL="sudo apt-get install -y"
+#alias UPDATE="sudo apt-get update"
+#alias UPGRADE="sudo apt-get upgrade"
+#alias UNINSTALL="sudo apt-get purge"
+## openSuSE specific--Make it shorter
+#alias UPDATE="sudo zypper update "
+#alias REFRESH="sudo zypper refresh "
+#alias REMOVE="sudo zypper remove "
+
+# arch specific commands
+alias UPDATE="sudo ~/bin/update.pacman.sh"
+alias REFRESH="sudo pacman -Syy "
+alias REMOVE="sudo pacman -Rns "
+alias PAC="sudo pacman -S "
+alias UP="sudo pacman -Su "
+alias SYSLOG='tail -f /var/log/Xorg.0.log'
+alias UPXT='xrdb -merge ~/.Xresources'
+#alias MAKEPKG="makepkg --clean --cleanbuild"
+
+# Compiler output
+alias GCC_ECHO="echo \"int main() { return 0; }\" | gcc -march=native -v -Q -x c - 2>&1"
+alias GCC_HELP="gcc -v -Q  -march=native --help=target"
+
+# navigation
+alias CD="cd ../"
+alias CDCD="cd ../../"
+
+# Use human-readable filesizes
+alias df="df -h"
+alias du="du -ch --max-depth=1"
+alias SIZE="du -ch --max-depth=1 | sort -h; echo 'du -ch --max-depth=1 | sort -h'"
+alias DIFF="diff --suppress-common-lines --side-by-side --recursive"
+
+
+alias SSH_WEG='ssh WEG@Williams-iMac'
+alias SSH_MOE='ssh -t -p 2222 edward@moe "bash"'
+alias ECLIPSE='~/JAVA/eclipse/eclipse -vm /usr/lib/jvm/latest/jre/bin &'
+
+
+alias TWS3="cd /home/edward/Dropbox/FX/TWS/IBJts/; java -cp jts.jar:total.2013.jar:hsqldb.jar:jcommon-1.0.12.jar:jfreechart-1.0.9.jar:jhall.jar:other.jar:rss.jar -Xmx2048M  jclient.LoginFrame ."
+alias TWS="cd /home/edward/TWS/IBJts; java -cp jts.jar:total.2013.jar -Xmx512M jclient.LoginFrame ."
+alias TWS2="cd /home/edward/Downloads/IBJts; java -cp jts.jar:total.2013.jar -Xmx1536M -XX:MaxPermSize=512M jclient.LoginFrame ."
+
+function GIT_INIT()
+{
+  # Begin setting up repo
+  git init;
+
+  # Copy over boilerplate files
+  cp ~/DEV/README* ./;
+  cp ~/DEV/LICENSE* ./;
+  cp ~/DEV/.gitignore ./;
+
+  # Start master branch
+  git add .  ;
+  git commit -m "Initial set up -- added README, .gitignore and LICENSE";
+
+  # Create branches from master
+  git checkout -b prod;
+  git checkout -b dev;
+  git checkout -b test;
+
+  # Thus establishing updating hierarchy:
+  # testing (raw mods)-> dev (polished mods)-> prod (production)-> master (public)
+
+  echo
+  echo "Initial setup complete!"
+  echo
+  echo "Now add the project files, folders to the testing branch"
+  echo
+  echo
+}
+function GCOPY()
+{
+    echo "Copy in git without merging"
+    echo "copy from (branch/file) master/foo to gh-pages:"
+    echo "git checkout gh-pages"
+    echo "git checkout master foo"
+    echo "git commit -m 'Add file foo to gh-pages.'"
+
+    DEST=$1
+    SOURCE=$2
+    FILE=$3
+
+    git checkout $DEST
+    git checkout $SOURCE $FILE
+    git commit -m "Copied file $FILE from $SOURCE to $DEST"
+}
+
+function SCP()
+{
+    # REMINDER FOR SCP SYNTAX
+    echo 'scp   FROM   TO'
+    echo ''
+    echo 'scp -P 1235 ~/LOCAL_FILE  myuser@remoteserver.com:/REMOTE_DIR'
+    echo 'scp -P 1235 myuser@remoteserver:/REMOTE_FILE  ~/local_dir'
+    echo ''
+}
+
+#export JAVA_HOME=$JAVA_HOME:/usr/lib/jvm/latest/jre
+function TAIL()
+{
+  journalctl | tail -n $1
+}
+function lm()
+{
+  ls -al $1 --color | more
+}
+function sulm()
+{
+  sudo ls -al $1 --color | more
+}
+function PDF()
+{
+    # Compile file to pdf
+    texfiles=" "
+
+    for file in "$@"
+    do
+	texfiles+=" $file.tex"
+    done
+
+
+    pdflatex $texfiles;
+    #rm *.aux *.out *.log
+}
+
+function pdfextract()
+{
+  # this function uses 3 arguments:
+  #     $1 is the first page of the range to extract: pXX
+  #     $2 is the last page of the range to extract: pYY
+  #     $3 is the input file: inputfile
+  #     output file will be named "inputfile_pXX-pYY.pdf"
+  gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
+	      -dFirstPage=${1} \
+	      -dLastPage=${2} \
+	      -sOutputFile=${3%.pdf}_p${1}-p${2}.pdf \
+	     ${3}
+}
+
+extract () {
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)  tar xvjf $1     ;;
+      *.tar.gz)    tar xvzf $1    ;;
+      *.bz2)       bunzip2 $1     ;;
+      *.rar)       unrar x $1     ;;
+      *.gz)        gunzip $1      ;;
+      *.tar)       tar xvf $1     ;;
+      *.tbz2)      tar xvjf $1    ;;
+      *.tgz)       tar xvzf $1    ;;
+      *.zip)       unzip $1       ;;
+      *.Z)         uncompress $1  ;;
+      *.7z)        7z x $1        ;;
+      *)           echo "don't know how to extract '$1'..." ;;
+    esac
+
+    echo "'$1' is not a valid file!"
+  fi
+}
+
+
+function ff()
+{
+#    # this function uses 3 arguments:
+#    #     $1 is the ABSOLUTE search path with quotes
+#    #     $2 is the file/dir name, e.g. "*hello_world.c" with quotes
+#    #     $3 is the tag for file or directory, 'f' or 'd' without quotes
+#    #     function calls sudo and the 'find' function
+#    #     2> file redirects stderr to file
+    echo 'sudo find "$1" -iname "$2" -type "$3" -not -path "/archive/*" -not -path "/backup/*" 2>dev/null'
+    sudo find "$1" -iname "$2" -type "$3" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
+}
+
+function pdfCurlytoMoe()
+{
+    FILE=$1
+    # Pull .tex from curly to moe
+#    scp -P 2222 edward@curly:/home/edward/Dropbox/CV/$FILE.tex  ~/Dropbox/CV
+echo $FILE
+    # PDF the revised .tex file
+#    pdflatex ~/Dropbox/CV/$FILE.tex
+
+    # Send new pdf to curly
+#    scp -P 2222 ~/Dropbox/CV/$FILE.pdf  edward@curly:/home/edward/Dropbox/CV/
+}
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+  . /etc/bash_completion
+fi
+
+##  auto-start conky
+#conky_ps='ps -e | grep conky'
+#if [ "$conky_ps" = '' ]; then
+#   . ~/bin/conky_start
+#    sleep 2
+#    clear
+#fi
+
+
+function mydf()         # Pretty-print of 'df' output.
+{                       # Inspired by 'dfc' utility.
+    for fs ; do
+
+	if [ ! -d $fs ]
+	then
+	  echo -e $fs" :No such file or directory" ; continue
+	fi
+
+	local info=( $(command df -P $fs | awk 'END{ print $2,$3,$5 }') )
+	local free=( $(command df -Pkh $fs | awk 'END{ print $4 }') )
+	local nbstars=$(( 20 * ${info[1]} / ${info[0]} ))
+	local out="["
+	for ((j=0;j<20;j++)); do
+	    if [ ${j} -lt ${nbstars} ]; then
+	       out=$out"*"
+	    else
+	       out=$out"-"
+	    fi
+	done
+	out=${info[2]}" "$out"] ("$free" free on "$fs")"
+	echo -e $out
+    done
+}
+
+# Get IP address on ethernet
+function my_ip() # Get IP address on ethernet.
+{
+    MY_IP=$(/sbin/ifconfig enp5s0 | awk '/inet/ { print $2 } ' |
+      sed -e s/addr://)
+    echo ${MY_IP:-"Not connected"}
+}
+
+# Get current host related info.
+function ii()
+{
+    echo -e "\nYou are logged on ${BRed}$HOST"
+    echo -e "\n${BRed}Additionnal information:$NC " ; uname -a
+    echo -e "\n${BRed}Users logged on:$NC " ; w -hs |
+	cut -d " " -f1 | sort | uniq
+    echo -e "\n${BRed}Current date :$NC " ; date
+    echo -e "\n${BRed}Machine stats :$NC " ; uptime
+    echo -e "\n${BRed}Memory stats :$NC " ; free
+    echo -e "\n${BRed}Diskspace :$NC " ; mydf / $HOME
+    echo -e "\n${BRed}Local IP Address :$NC" ; my_ip
+    echo -e "\n${BRed}Open connections :$NC "; netstat -pan --inet;
+    echo
+}
+
+xset -dpms; xset s off
