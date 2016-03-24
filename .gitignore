@@ -1,8 +1,9 @@
 # File that appears obsolete
 
 
-# Ignore all .tmp files
+# Ignore all .tmp, ~ files etc files
 *~
+*.tmp
 
 
 # Ignore everything in DEV/
