@@ -134,8 +134,8 @@ esac
 #    Red       == current user does not have write privileges
 #################################################################################
 # User type:
-#SU="\[${BRed}\] #\[${RESET}\]"           # User is root.
-SU="\[${BGreen}\] $\[${RESET}\]"         # User is normal (well ... most of us are).
+#SU="\[${BRed}\] #\[${RESET}\]"     # User is root // Needs to be in root .bashrc
+SU="\[${BGreen}\] $\[${RESET}\]"    # User is normal (well ... most of us are).
 
 # Test connection type:
 if [ -n "$SSH_CLIENT" ]; then
@@ -201,6 +201,30 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 
+#### Set PATH, EXPORT values ----- #################################################
+# export TMPDIR="$HOME/TMP"
+# export R_HOME=/usr/lib64/R
+# export EDITOR=/usr/bin/emacs
+
+# export LANG=en_US.UTF-8
+# export INPUTRC="$HOME/.inputrc"
+# export PATH=$PATH:"$HOME/bin"
+
+# export JAVA_HOME=/usr/lib/jvm/default
+# export PATH=$PATH:$JAVA_HOME/bin
+# export CLASSPATH=$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/jre/lib/rt.jar
+
+# export XDG_CONFIG_DIRS="$HOME/.config/openbox:/etc/xdg"
+# export PATH=$PATH:/usr/lib/rstudio/bin
+
+
+####################################################
+###export LD_LIBRARY_PATH=/opt/wx/2.8/lib
+#export PYTHONPATH=/usr/lib/python2.7
+#$PYTHONPATH:/home/edward/Python/wxPython-src-2.8.12.1/wxPython
+#export PATH=$PATH:$PYTHONPATH
+####################################################
+
 # some more ls aliases ----- ####################################################
 alias ll='ls -alF --group-directories-first -A'
 
@@ -223,6 +247,7 @@ alias home='cd ~'
 alias em='emacs -nw'
 alias EM='em ~/.emacs'
 alias suem='sudo emacs -nw'
+alias eml='emacs -nw -q -l ./.emacs '
 
 alias RHOME='cd /usr/lib/R/'
 alias RPROFILE='em ~/Dropbox/R/Rprofile.site'
@@ -236,33 +261,19 @@ alias POWEROFF='systemctl poweroff'
 alias terminator_ebg='terminator -m -b -l ebg &'
 
 alias te='top -u edward'
-alias tr='top -u root'
+alias trr='top -u root'
 alias tt='top'
 alias cls='clear'
 
 alias GG="gitg --all"
-alias GA="git add"
-alias GC="git checkout"
+alias GA="git add "
+alias GC="git checkout "
 alias GS="git status"
 alias GB="git branch"
 alias GL="git ls-files"
 alias GM="git commit -m "
+alias GD="git diff --color --stat "
 
-# hint to run wine #
-# wine "/home/edward/.wine/drive_c/Program Files (x86)/WebEx/WebEx/500/nbrplayer.exe"
-
-#alias PRINT='lpr -P "Dell Laser Printer 1710n"'
-#alias PRINT='lpr -p -P "delllaserprinter1710"'
-
-## ubuntu specific--Make it shorter
-#alias INSTALL="sudo apt-get install -y"
-#alias UPDATE="sudo apt-get update"
-#alias UPGRADE="sudo apt-get upgrade"
-#alias UNINSTALL="sudo apt-get purge"
-## openSuSE specific--Make it shorter
-#alias UPDATE="sudo zypper update "
-#alias REFRESH="sudo zypper refresh "
-#alias REMOVE="sudo zypper remove "
 
 # arch specific commands
 alias UPDATE="sudo ~/bin/update.pacman.sh"
@@ -270,8 +281,8 @@ alias REFRESH="sudo pacman -Syy "
 alias REMOVE="sudo pacman -Rns "
 alias PAC="sudo pacman -S "
 alias UP="sudo pacman -Su "
-alias SYSLOG='tail -f /var/log/Xorg.0.log'
-alias UPXT='xrdb -merge ~/.Xresources'
+alias SYSLOG="tail -f /var/log/Xorg.0.log"
+alias UPXTerm="xrdb -merge ~/.Xresources"
 #alias MAKEPKG="makepkg --clean --cleanbuild"
 
 # Compiler output
@@ -290,7 +301,8 @@ alias DIFF="diff --suppress-common-lines --side-by-side --recursive"
 
 
 alias SSH_WEG='ssh WEG@Williams-iMac'
-alias SSH_MOE='ssh -t -p 2222 edward@moe "bash"'
+alias SSH_MOE='ssh -Y -t -p 2222 edward@moe "bash"'
+alias SSH_CURLY='ssh -Y -t -p 2222 edward@curly "bash"'
 alias ECLIPSE='~/JAVA/eclipse/eclipse -vm /usr/lib/jvm/latest/jre/bin &'
 
 
@@ -298,7 +310,8 @@ alias TWS3="cd /home/edward/Dropbox/FX/TWS/IBJts/; java -cp jts.jar:total.2013.j
 alias TWS="cd /home/edward/TWS/IBJts; java -cp jts.jar:total.2013.jar -Xmx512M jclient.LoginFrame ."
 alias TWS2="cd /home/edward/Downloads/IBJts; java -cp jts.jar:total.2013.jar -Xmx1536M -XX:MaxPermSize=512M jclient.LoginFrame ."
 
-function GIT_INIT()
+
+GIT_INIT()
 {
   # Begin setting up repo
   git init;
@@ -327,24 +340,69 @@ function GIT_INIT()
   echo
   echo
 }
-function GCOPY()
+GCOPY()
 {
-    echo "Copy in git without merging"
-    echo "copy from (branch/file) master/foo to gh-pages:"
-    echo "git checkout gh-pages"
-    echo "git checkout master foo"
-    echo "git commit -m 'Add file foo to gh-pages.'"
+    if [ $# -eq 0 ]; then
 
-    DEST=$1
-    SOURCE=$2
-    FILE=$3
+      echo 'Copy in git without merging'
+      echo 'copy from (branch/file) master/foo to (branch )gh-pages:'
+      echo 'git checkout gh-pages'
+      echo 'git checkout master foo'
+      echo 'git commit -m Add file foo to gh-pages'
+      echo 'DEST=gh-pages,  SOURCE=master,  FILE=foo'
 
-    git checkout $DEST
-    git checkout $SOURCE $FILE
-    git commit -m "Copied file $FILE from $SOURCE to $DEST"
+    fi
+
+    if [ $# -gt 0 ]; then
+
+      echo "Copy in git without merging"
+      echo "copy from (branch/file) master/foo to (branch) gh-pages:"
+      echo "git checkout gh-pages"
+      echo "git checkout master foo"
+      echo "git commit -m 'Add file foo to gh-pages.'"
+      echo "DEST=$1,  SOURCE=$2,  FILE=$3"
+
+      DEST=$1
+      SOURCE=$2
+      FILE=$3
+
+      git checkout $DEST
+      git checkout $SOURCE $FILE
+      git commit -m "Copied file $FILE from $SOURCE to $DEST"
+
+    fi
+}
+GMERGE()
+{
+    if [ $# -eq 0 ]; then
+      echo 'File-wise Merge:'
+      echo 'Copy $FILE from branch $SOURCE into $FILE of branch $DEST'
+      echo 'git checkout $DEST'
+      echo 'git checkout --patch $SOURCE $FILE'
+      echo 'DEST=$DEST,  SOURCE=$SOURCE,  FILE=$FILE'
+    fi
+
+
+    if [ $# -gt 0 ]; then
+
+      echo "File-wise Merge:"
+      echo "Copy file $FILE from branch $SOURCE into file $FILE of branch $DEST"
+      echo "git checkout $DEST"
+      echo "git checkout --patch $SOURCE $FILE"
+      echo "DEST=$1,  SOURCE=$2,  FILE=$3"
+
+      DEST=$1;
+      SOURCE=$2;
+      FILE=$3;
+
+      # Merge file $FILE from SOURCE with file f of DEST
+      git checkout $DEST;
+      git checkout --patch $SOURCE $FILE;
+
+    fi
 }
 
-function SCP()
+SCP()
 {
     # REMINDER FOR SCP SYNTAX
     echo 'scp   FROM   TO'
@@ -354,27 +412,29 @@ function SCP()
     echo ''
 }
 
-#export JAVA_HOME=$JAVA_HOME:/usr/lib/jvm/latest/jre
-function TAIL()
+TAIL()
 {
   journalctl | tail -n $1
 }
-function lm()
+
+lm()
 {
   ls -al $1 --color | more
 }
-function sulm()
+
+sulm()
 {
   sudo ls -al $1 --color | more
 }
-function PDF()
+
+PDF()
 {
     # Compile file to pdf
     texfiles=" "
 
     for file in "$@"
     do
-	texfiles+=" $file.tex"
+    texfiles+=" $file.tex"
     done
 
 
@@ -382,18 +442,18 @@ function PDF()
     #rm *.aux *.out *.log
 }
 
-function pdfextract()
+pdfextract()
 {
-  # this function uses 3 arguments:
+  # this uses 3 arguments:
   #     $1 is the first page of the range to extract: pXX
   #     $2 is the last page of the range to extract: pYY
   #     $3 is the input file: inputfile
   #     output file will be named "inputfile_pXX-pYY.pdf"
   gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
-	      -dFirstPage=${1} \
-	      -dLastPage=${2} \
-	      -sOutputFile=${3%.pdf}_p${1}-p${2}.pdf \
-	     ${3}
+          -dFirstPage=${1} \
+          -dLastPage=${2} \
+          -sOutputFile=${3%.pdf}_p${1}-p${2}.pdf \
+         ${3}
 }
 
 extract () {
@@ -417,31 +477,19 @@ extract () {
   fi
 }
 
-
-function ff()
+ff()
 {
-#    # this function uses 3 arguments:
+#    # this uses 3 arguments:
 #    #     $1 is the ABSOLUTE search path with quotes
 #    #     $2 is the file/dir name, e.g. "*hello_world.c" with quotes
 #    #     $3 is the tag for file or directory, 'f' or 'd' without quotes
-#    #     function calls sudo and the 'find' function
+#    #     calls sudo and the 'find' function
 #    #     2> file redirects stderr to file
-    echo 'sudo find "$1" -iname "$2" -type "$3" -not -path "/archive/*" -not -path "/backup/*" 2>dev/null'
-    sudo find "$1" -iname "$2" -type "$3" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
+    echo 'sudo find "$1" -iname "$2" -type "$3" -not -path "~/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>dev/null'
+    sudo find "$1" -iname "$2" -type "$3" -not -path "~/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
 }
 
-function pdfCurlytoMoe()
-{
-    FILE=$1
-    # Pull .tex from curly to moe
-#    scp -P 2222 edward@curly:/home/edward/Dropbox/CV/$FILE.tex  ~/Dropbox/CV
-echo $FILE
-    # PDF the revised .tex file
-#    pdflatex ~/Dropbox/CV/$FILE.tex
 
-    # Send new pdf to curly
-#    scp -P 2222 ~/Dropbox/CV/$FILE.pdf  edward@curly:/home/edward/Dropbox/CV/
-}
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -459,33 +507,33 @@ fi
 #fi
 
 
-function mydf()         # Pretty-print of 'df' output.
-{                       # Inspired by 'dfc' utility.
+mydf()              # Pretty-print of 'df' output.
+{                   # Inspired by 'dfc' utility.
     for fs ; do
 
-	if [ ! -d $fs ]
-	then
-	  echo -e $fs" :No such file or directory" ; continue
-	fi
+    if [ ! -d $fs ]
+    then
+      echo -e $fs" :No such file or directory" ; continue
+    fi
 
-	local info=( $(command df -P $fs | awk 'END{ print $2,$3,$5 }') )
-	local free=( $(command df -Pkh $fs | awk 'END{ print $4 }') )
-	local nbstars=$(( 20 * ${info[1]} / ${info[0]} ))
-	local out="["
-	for ((j=0;j<20;j++)); do
-	    if [ ${j} -lt ${nbstars} ]; then
-	       out=$out"*"
-	    else
-	       out=$out"-"
-	    fi
-	done
-	out=${info[2]}" "$out"] ("$free" free on "$fs")"
-	echo -e $out
+    local info=( $(command df -P $fs | awk 'END{ print $2,$3,$5 }') )
+    local free=( $(command df -Pkh $fs | awk 'END{ print $4 }') )
+    local nbstars=$(( 20 * ${info[1]} / ${info[0]} ))
+    local out="["
+    for ((j=0;j<20;j++)); do
+        if [ ${j} -lt ${nbstars} ]; then
+           out=$out"*"
+        else
+           out=$out"-"
+        fi
+    done
+    out=${info[2]}" "$out"] ("$free" free on "$fs")"
+    echo -e $out
     done
 }
 
 # Get IP address on ethernet
-function my_ip() # Get IP address on ethernet.
+my_ip() # Get IP address on ethernet.
 {
     MY_IP=$(/sbin/ifconfig enp5s0 | awk '/inet/ { print $2 } ' |
       sed -e s/addr://)
@@ -493,12 +541,12 @@ function my_ip() # Get IP address on ethernet.
 }
 
 # Get current host related info.
-function ii()
+ii()
 {
     echo -e "\nYou are logged on ${BRed}$HOST"
     echo -e "\n${BRed}Additionnal information:$NC " ; uname -a
     echo -e "\n${BRed}Users logged on:$NC " ; w -hs |
-	cut -d " " -f1 | sort | uniq
+    cut -d " " -f1 | sort | uniq
     echo -e "\n${BRed}Current date :$NC " ; date
     echo -e "\n${BRed}Machine stats :$NC " ; uptime
     echo -e "\n${BRed}Memory stats :$NC " ; free
@@ -508,4 +556,23 @@ function ii()
     echo
 }
 
+
 xset -dpms; xset s off
+
+
+
+
+# hint to run wine #
+# wine "/home/edward/.wine/drive_c/Program Files (x86)/WebEx/WebEx/500/nbrplayer.exe"
+#alias PRINT='lpr -P "Dell Laser Printer 1710n"'
+#alias PRINT='lpr -p -P "delllaserprinter1710"'
+
+## ubuntu specific--Make it shorter
+#alias INSTALL="sudo apt-get install -y"
+#alias UPDATE="sudo apt-get update"
+#alias UPGRADE="sudo apt-get upgrade"
+#alias UNINSTALL="sudo apt-get purge"
+## openSuSE specific--Make it shorter
+#alias UPDATE="sudo zypper update "
+#alias REFRESH="sudo zypper refresh "
+#alias REMOVE="sudo zypper remove "
