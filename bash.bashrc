@@ -23,7 +23,7 @@ esac
 [ -r /usr/share/bash-completion/bash_completion   ] && . /usr/share/bash-completion/bash_completion
 
 
-################################################################################
+#################################################################################
 # Everybody shares the same colors
 #################################################################################
 Color_Off='\e[0m'       # Text Reset
@@ -101,7 +101,96 @@ On_IWhite='\e[0;107m'   # White
 RESET='\e[0m'           # Text Reset
 
 ALERT=${BWhite}${On_Red} # Bold White on red background
-###########################################
+#################################################################################
+
+
+#################################################################################
+##  Assign prompt for root and users
+#################################################################################
+
+
+## - COLOR PROMPT - #############################################################
+#-------------------------------------------------------------
+# Shell Prompt - for many examples, see:
+#       http://www.debian-administration.org/articles/205
+#       http://www.askapache.com/linux/bash-power-prompt.html
+#       http://tldp.org/HOWTO/Bash-Prompt-HOWTO
+#       https://github.com/nojhan/liquidprompt
+#-------------------------------------------------------------
+# Current Format: [TIME USER@HOST PWD] >
+# USER:
+#    Green $   == normal user
+#    Red #     == root
+# HOST:
+#    pwd $     == local session
+#    pwd [SSH] == secured remote connection (via ssh)
+#    Red [FTP] == unsecured remote connection
+# PWD:
+#    Blue      == more than 10% free disk space
+#    Orange    == less than 10% free disk space
+#    Red       == current user does not have write privileges
+#################################################################################
+# User type:
+if [[ $EUID == 0 ]]; then
+    SU="\[${BRed}\] #\[${RESET}\]"      # User is root // Needs to be in root .bashrc
+else
+    SU="\[${BGreen}\] $\[${RESET}\]"    # User is normal (well ... most of us are).
+fi
+
+
+# Test connection type:
+if [ -n "$SSH_CLIENT" ]; then
+    CNX="\[${BYellow}\] [SSH]\[${RESET}\]"     # Connected on remote machine, via ssh (good).
+fi
+if [ -n "${SSH_CONNECTION}" ]; then
+    CNX="\[${BYellow}\] [SSH]\[${RESET}\]"     # Connected on remote machine, via ssh (good).
+elif [[ "${DISPLAY%%:0*}" != "" ]]; then
+    CNX="\[${BRed}\] [FTP]\[${RESET}\]"        # Connected on remote machine, not via ssh (bad).
+else
+    CNX=""                                     # Connected on local machine.
+fi
+
+# Returns a color according to free disk space in $PWD.
+disk_color()
+{
+    if [ ! -w "${PWD}" ] ; then
+    echo -en ${BRed} # No 'write' privilege in the current directory.
+    elif [ -s "${PWD}" ] ; then
+    local used=$(command df -P "$PWD" | awk 'END {print $5} {sub(/%/,"")}')
+    if [ ${used} -gt 95 ]; then
+        echo -en ${ALERT}           # Disk almost full (>95%).
+    elif [ ${used} -gt 90 ]; then
+        echo -en ${BRed}            # Free disk space almost gone.
+    elif [ ${used} -gt 75 ]; then
+        echo -en ${BYellow}            # Free disk space almost gone.
+    else
+        echo -en ${BBlue}           # Free disk space is ok.
+    fi
+    else
+    echo -en ${BCyan}    # Current directory is size '0' (like /proc, /sys etc).
+    fi
+}
+
+#PS1='\[\e[1;34m\]\w\[\e[m\] \[\e[1;32m\]\$\[\e[m\] \[\e[1;37m\]'
+#PS1="\[${BBlue}\]\w\[\e[m\] \[${BGreen}\]\$\[\e[m\] \[${BWhite}\]"
+#PS1="\[${BBlue}\]\w\[${RESET}\]\[${BPurple}\]\$(parse_git_branch)\[${RESET}\]${SU}${CNX} \[${BWhite}\]"
+parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
+PS1="\[\$(disk_color)\]\w\[${RESET}\]\[${BPurple}\]\$(parse_git_branch)\[${RESET}\]${SU}${CNX} \[${BWhite}\]"
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]${PS1}"  # prev: \w\a]$PS1"   //"
+    ;;
+    *)
+    ;;
+esac
+
+
+
 
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace

@@ -39,4 +39,3 @@ PATH="$PATH:$JAVA_HOME/bin"
 export PATH
 
 export CLASSPATH="$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/jre/lib/rt.jar"
-export INPUTRC="$HOME/.inputrc"
