@@ -7,8 +7,6 @@
 [ -z "$PS1" ] && return
 
 
-#### Set PATH, EXPORT values ----- #################################################
-
 ####################################################
 ###export LD_LIBRARY_PATH=/opt/wx/2.8/lib
 #export PYTHONPATH=/usr/lib/python2.7
@@ -312,21 +310,3 @@ ii()
 
 
 xset -dpms; xset s off
-
-
-
-
-# hint to run wine #
-# wine "/home/edward/.wine/drive_c/Program Files (x86)/WebEx/WebEx/500/nbrplayer.exe"
-#alias PRINT='lpr -P "Dell Laser Printer 1710n"'
-#alias PRINT='lpr -p -P "delllaserprinter1710"'
-
-## ubuntu specific--Make it shorter
-#alias INSTALL="sudo apt-get install -y"
-#alias UPDATE="sudo apt-get update"
-#alias UPGRADE="sudo apt-get upgrade"
-#alias UNINSTALL="sudo apt-get purge"
-## openSuSE specific--Make it shorter
-#alias UPDATE="sudo zypper update "
-#alias REFRESH="sudo zypper refresh "
-#alias REMOVE="sudo zypper remove "

@@ -11,9 +11,13 @@ test -z "$PROFILEREAD" && . /etc/profile || true
 
 
 export XDG_CONFIG_DIRS="$HOME/.config/openbox:/etc/xdg"
-export BROWSER=/usr/bin/palemoon
-
 export TMPDIR="$HOME/TMP"
+export INPUTRC="$HOME/.inputrc"
+
+
+export BROWSER=/usr/bin/palemoon
 export EDITOR=/usr/bin/emacs
 
+
 export PATH="$PATH:${HOME}/bin"
+PATH="$PATH:/usr/lib/rstudio/bin"
