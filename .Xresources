@@ -21,12 +21,3 @@ xterm*scrollKey:        true
 
 Xcursor*theme: vanilla-dmz
 Xcursor*size: 12
-
-! UI elements
-!Emacs.menuBar: 0
-!Emacs.toolBar: 0
-!Emacs.verticalScrollBars: off
-! Font settings
-!Emacs.FontBackend: xft,x
-!Emacs.font: Inconsolata LGC:size=16
-!Emacs.font: Monospace-12

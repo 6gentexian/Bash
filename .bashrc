@@ -10,7 +10,7 @@
 ####################################################
 ###export LD_LIBRARY_PATH=/opt/wx/2.8/lib
 #export PYTHONPATH=/usr/lib/python2.7
-#$PYTHONPATH:/home/edward/Python/wxPython-src-2.8.12.1/wxPython
+#$PYTHONPATH:"$HOME/Python/wxPython-src-2.8.12.1/wxPython"
 #export PATH=$PATH:$PYTHONPATH
 ####################################################
 
@@ -49,7 +49,7 @@ alias REBOOT='systemctl reboot'
 alias POWEROFF='systemctl poweroff'
 alias terminator_ebg='terminator -m -b -l ebg &'
 
-alias te='top -u edward'
+alias te='top -u $USER'
 alias trr='top -u root'
 alias tt='top'
 alias cls='clear'
