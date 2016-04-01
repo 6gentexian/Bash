@@ -193,12 +193,50 @@ GMERGE()
 
 SCP()
 {
+  if [ $# -eq 0 ]; then
+
     # REMINDER FOR SCP SYNTAX
-    echo 'scp   FROM   TO'
-    echo ''
-    echo 'scp -P 1235 ~/LOCAL_FILE  myuser@remoteserver.com:/REMOTE_DIR'
-    echo 'scp -P 1235 myuser@remoteserver:/REMOTE_FILE  ~/local_dir'
-    echo ''
+    echo "scp   FROM   TO"
+    echo
+    echo "scp -P 1235 ~/LOCAL_FILE  myuser@remoteserver.com:/REMOTE_DIR"
+    echo
+    echo "scp -P 1235 myuser@remoteserver:/REMOTE_FILE  ~/local_dir"
+    echo
+    echo 'SCP  FROM=$1  FILE=$2  DEST.DIR=$3  REMOTE.NAME=$4'
+  fi
+
+  if [ $# -gt 0 ]; then
+    # Are we moving files 'FROM' Local 'TO' Remote or 'FROM' Remote 'TO' Local?
+    FROM=$1
+    FILE=$2
+    DEST_DIR=$3
+    REMOTE_NAME=$4
+
+    echo "FROM  =  $FROM"
+    echo "FILE  =  $FILE"
+    echo "USER  =  $USER"
+    echo "PATH  =  $DEST_DIR"
+    echo "NAME  =  $REMOTE_NAME"
+
+    if [[ $FROM == local ]]; then
+
+      # Push file from local machine to remote
+      scp -P 2222 $FILE $USER@$REMOTE_NAME:$DEST_DIR
+      echo "FILE  =  $FILE"
+      echo "USER  =  $USER"
+      echo "PATH  =  $DEST_DIR"
+      echo "NAME  =  $REMOTE_NAME"
+    fi
+
+    if [[ $FROM == remote ]]; then
+      # Pull file from remote machine to local
+      scp -P 2222 $USER@$REMOTE_NAME:$FILE $DEST_DIR
+      echo "$FILE"
+      echo "$USER"
+      echo "PATH  =  $DEST_DIR"
+      echo "NAME  =  $REMOTE_NAME"
+    fi
+  fi
 }
 
 TAIL()
@@ -259,7 +297,7 @@ fi
 #fi
 
 
-DF()              # Pretty-print of 'df' output.
+DF()                # Pretty-print of 'df' output.
 {                   # Inspired by 'dfc' utility.
     for fs ; do
 
