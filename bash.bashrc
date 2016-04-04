@@ -132,9 +132,9 @@ ALERT=${BWhite}${On_Red} # Bold White on red background
 #################################################################################
 # User type:
 if [[ $EUID == 0 ]]; then
-    SU="\[${BRed}\] #\[${RESET}\]"      # User is root // Needs to be in root .bashrc
+    SU="\[${BRed}\] #\[${RESET}\]"      # User: root. Needs to be in root .bashrc?
 else
-    SU="\[${BGreen}\] $\[${RESET}\]"    # User is normal (well ... most of us are).
+    SU="\[${BGreen}\] $\[${RESET}\]"    # User: regular
 fi
 
 
@@ -223,17 +223,23 @@ case "$TERM" in
 esac
 
 
+#-------------------------------------------------------------
+# Simple aliases for common CLI commands
+#-------------------------------------------------------------
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
 
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
 
-    alias grep='grep --color=auto'
+    alias grep='grep -i --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
 
+#-------------------------------------------------------------
+# General de-compress algo everyone can remember
+#-------------------------------------------------------------
 extract () {
   if [ -f $1 ] ; then
     case $1 in

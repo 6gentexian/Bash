@@ -95,13 +95,14 @@ alias SSH_CURLY='ssh -Y -t -p 2222 edward@curly "bash"'
 alias ECLIPSE='~/JAVA/eclipse/eclipse -vm /usr/lib/jvm/latest/jre/bin &'
 
 
-alias TWS3="cd /home/edward/Dropbox/FX/TWS/IBJts/; java -cp jts.jar:total.2013.jar:hsqldb.jar:jcommon-1.0.12.jar:jfreechart-1.0.9.jar:jhall.jar:other.jar:rss.jar -Xmx2048M  jclient.LoginFrame ."
-alias TWS="cd /home/edward/TWS/IBJts; java -cp jts.jar:total.2013.jar -Xmx512M jclient.LoginFrame ."
-alias TWS2="cd /home/edward/Downloads/IBJts; java -cp jts.jar:total.2013.jar -Xmx1536M -XX:MaxPermSize=512M jclient.LoginFrame ."
+#alias TWS3="cd $HOME/Dropbox/FX/TWS/IBJts/; java -cp jts.jar:total.2013.jar:hsqldb.jar:jcommon-1.0.12.jar:jfreechart-1.0.9.jar:jhall.jar:other.jar:rss.jar -Xmx2048M  jclient.LoginFrame ."
+alias TWS="cd $HOME/TWS/IBJts; java -cp jts.jar:total.2013.jar -Xmx512M jclient.LoginFrame ."
+# alias TWS2="cd $HOME/Downloads/IBJts; java -cp jts.jar:total.2013.jar -Xmx1536M -XX:MaxPermSize=512M jclient.LoginFrame ."
 
 
 GIT_INIT()
 {
+  # Assumes you do your git work in ~/DEV
   # Begin setting up repo
   git init;
 
@@ -270,12 +271,12 @@ pdfextract()
 
 ff()
 {
-#    # this uses 3 arguments:
-#    #     $1 is the ABSOLUTE search path with quotes
-#    #     $2 is the file/dir name, e.g. "*hello_world.c" with quotes
-#    #     $3 is the tag for file or directory, 'f' or 'd' without quotes
-#    #     calls sudo and the 'find' function
-#    #     2> file redirects stderr to file
+    # this uses 3 arguments:
+    #     $1 is the ABSOLUTE search path with quotes
+    #     $2 is the file/dir name, e.g. "*hello_world.c" with quotes
+    #     $3 is the tag for file or directory, 'f' or 'd' without quotes
+    #     calls sudo and the 'find' function
+    #     2> file redirects stderr to file
     echo 'sudo find "$1" -iname "$2" -type "$3" -not -path "~/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>dev/null'
     sudo find "$1" -iname "$2" -type "$3" -not -path "~/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
 }
@@ -288,37 +289,28 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
   . /etc/bash_completion
 fi
 
-##  auto-start conky
-#conky_ps='ps -e | grep conky'
-#if [ "$conky_ps" = '' ]; then
-#   . ~/bin/conky_start
-#    sleep 2
-#    clear
-#fi
-
 
 DF()                # Pretty-print of 'df' output.
 {                   # Inspired by 'dfc' utility.
     for fs ; do
 
-    if [ ! -d $fs ]
-    then
-      echo -e $fs" :No such file or directory" ; continue
-    fi
+      if [ ! -d $fs ]; then
+        echo -e $fs" :No such file or directory" ; continue
+      fi
 
-    local info=( $(command df -P $fs | awk 'END{ print $2,$3,$5 }') )
-    local free=( $(command df -Pkh $fs | awk 'END{ print $4 }') )
-    local nbstars=$(( 20 * ${info[1]} / ${info[0]} ))
-    local out="["
-    for ((j=0;j<20;j++)); do
+      local info=( $(command df -P $fs | awk 'END{ print $2,$3,$5 }') )
+      local free=( $(command df -Pkh $fs | awk 'END{ print $4 }') )
+      local nbstars=$(( 20 * ${info[1]} / ${info[0]} ))
+      local out="["
+      for ((j=0;j<20;j++)); do
         if [ ${j} -lt ${nbstars} ]; then
            out=$out"*"
         else
            out=$out"-"
         fi
-    done
-    out=${info[2]}" "$out"] ("$free" free on "$fs")"
-    echo -e $out
+      done
+      out=${info[2]}" "$out"] ("$free" free on "$fs")"
+      echo -e $out
     done
 }
 
@@ -340,7 +332,7 @@ ii()
     echo -e "\n${BRed}Current date :$NC " ; date
     echo -e "\n${BRed}Machine stats :$NC " ; uptime
     echo -e "\n${BRed}Memory stats :$NC " ; free
-    echo -e "\n${BRed}Diskspace :$NC " ; mydf / $HOME
+    echo -e "\n${BRed}Diskspace :$NC " ; DF / $HOME
     echo -e "\n${BRed}Local IP Address :$NC" ; my_ip
     echo -e "\n${BRed}Open connections :$NC "; netstat -pan --inet;
     echo

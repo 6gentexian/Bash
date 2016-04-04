@@ -19,5 +19,5 @@ export BROWSER=/usr/bin/palemoon
 export EDITOR=/usr/bin/emacs
 
 
-export PATH="$PATH:${HOME}/bin"
 PATH="$PATH:/usr/lib/rstudio/bin"
+export PATH="$PATH:${HOME}/bin"

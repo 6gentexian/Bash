@@ -34,7 +34,7 @@ export JAVA_HOME=/usr/lib/jvm/default
 
 # Set our default path
 PATH="/usr/local/sbin:/usr/local/bin:/usr/bin"
-PATH="$PATH:/usr/lib/rstudio/bin"
+PATH="$PATH:R_HOME/bin"
 PATH="$PATH:$JAVA_HOME/bin"
 export PATH
 
