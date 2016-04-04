@@ -6,7 +6,6 @@ This suite of scripts provides user and system settings for bash and profile typ
 
 
 ##  Files
-
 ```.profile``` - Contains things *NOT* specifically related to bash, such as environment variables (PATH and friends)
 
 ```.bashrc```  - Contains anything you'd want at an interactive command line.  Ex. command prompt, EDITOR variable, user-specific bash aliases
