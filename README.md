@@ -46,4 +46,5 @@ Anything that should be available only to login shells should go in ```~/.profil
 ##  TODOs
 
 
-## See LICENSE.md
+## See [LICENSE.md](docs/LICENSE.md)
+
