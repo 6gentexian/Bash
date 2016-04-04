@@ -18,16 +18,19 @@
 #    .bash_profile should be super-simple and just load .profile and
 #      .bashrc (in that order)
 #
+#    profile - Is the system version of .profile
+#
+#    bash.bashrc - Is the system version of .bashrc
 #
 #
-#  DEPENDENCIES: N/A
+#  DEPENDENCIES:
+#  GNU bash, version 4.3.42(1)-release
 #
 #
 #
 #
 #
-#
-#  USE:  edit .bashrc: $ cd ~/; emacs .bashrc
+#  USE:  Edit .bashrc: $ cd ~/; emacs .bashrc
 #        Rememeber to source the files after saving: $ source .bashrc
 #
 #  NB: Ensure that ~/.bash_login does not exist.
