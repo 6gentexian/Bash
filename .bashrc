@@ -1,4 +1,5 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
+#
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 #################################################################################
@@ -7,31 +8,7 @@
 [ -z "$PS1" ] && return
 
 
-####################################################
-###export LD_LIBRARY_PATH=/opt/wx/2.8/lib
-#export PYTHONPATH=/usr/lib/python2.7
-#$PYTHONPATH:"$HOME/Python/wxPython-src-2.8.12.1/wxPython"
-#export PATH=$PATH:$PYTHONPATH
-####################################################
-
-# some more ls aliases ----- ####################################################
-alias ll='ls -alF --group-directories-first -A'
-
-#-------------------------------------------------------------
-# The 'ls' family (this assumes you use a recent GNU ls).
-#-------------------------------------------------------------
-# Add colors for filetype and  human-readable sizes by default on 'ls':
-alias ls='ls -h --color'
-alias lx='ls -lXB'         #  Sort by extension.
-alias lk='ls -lSr'         #  Sort by size, biggest last.
-alias lt='ls -ltr'         #  Sort by date, most recent last.
-alias lc='ls -ltcr'        #  Sort by/show change time,most recent last.
-alias la='ls -ltur'        #  Sort by/show access time,most recent last.
-
-# The ubiquitous 'll': directories first, with alphanumeric sorting:
-alias lr='ll -R'           #  Recursive ls.
-alias tree='tree -Csuh'    #  Nice alternative to 'recursive ls' ...
-
+# some custom ls aliases ----- ####################################################
 alias home='cd ~'
 alias em='emacs -nw'
 alias EM='em ~/.emacs'
@@ -49,10 +26,10 @@ alias REBOOT='systemctl reboot'
 alias POWEROFF='systemctl poweroff'
 alias terminator_ebg='terminator -m -b -l ebg &'
 
-alias te='top -u $USER'
-alias trr='top -u root'
-alias tt='top'
-alias cls='clear'
+alias te="top -u $USER"
+alias trr="top -u root"
+alias tt="top"
+alias cls="clear"
 
 alias GG="gitg --all"
 alias GA="git add "
@@ -139,7 +116,7 @@ GCOPY()
       echo 'git checkout gh-pages'
       echo 'git checkout master foo'
       echo 'git commit -m Add file foo to gh-pages'
-      echo 'DEST=gh-pages,  SOURCE=master,  FILE=foo'
+      echo 'DEST=gh-pages($1),  SOURCE=master($2),  FILE=foo($3)'
 
     fi
 
@@ -197,7 +174,7 @@ SCP()
   if [ $# -eq 0 ]; then
 
     # REMINDER FOR SCP SYNTAX
-    echo "scp   FROM   TO"
+    echo "scp          FROM                    TO"
     echo
     echo "scp -P 1235 ~/LOCAL_FILE  myuser@remoteserver.com:/REMOTE_DIR"
     echo

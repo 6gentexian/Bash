@@ -1,6 +1,8 @@
+#
 # /etc/profile
+#
 
-#Set our umask
+# Set our umask
 umask 022
 
 # Load profiles from /etc/profile.d
@@ -31,6 +33,7 @@ export LC_ALL=${LANG}
 
 export R_HOME=/usr/lib64/R
 export JAVA_HOME=/usr/lib/jvm/default
+
 
 # Set our default path
 PATH="/usr/local/sbin:/usr/local/bin:/usr/bin"

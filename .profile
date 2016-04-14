@@ -9,9 +9,7 @@
 test -z "$PROFILEREAD" && . /etc/profile || true
 
 
-
 export XDG_CONFIG_DIRS="$HOME/.config/openbox:/etc/xdg"
-export TMPDIR="$HOME/TMP"
 export INPUTRC="$HOME/.inputrc"
 
 
@@ -21,3 +19,9 @@ export EDITOR=/usr/bin/emacs
 
 PATH="$PATH:/usr/lib/rstudio/bin"
 export PATH="$PATH:${HOME}/bin"
+
+
+####################################################
+#export PYTHONPATH=/usr/lib/python2.7
+#export PATH=$PATH:$PYTHONPATH
+####################################################
