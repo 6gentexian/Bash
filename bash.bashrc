@@ -24,7 +24,7 @@ esac
 
 
 #################################################################################
-# Everybody shares the same colors
+# Everybody shares the same colors for prompts
 #################################################################################
 Color_Off='\e[0m'       # Text Reset
 
