@@ -1,4 +1,5 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
+#
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 #################################################################################
@@ -7,131 +8,29 @@
 [ -z "$PS1" ] && return
 
 
-#################################################################################
-# Everybody shares the same colors for prompts
-#################################################################################
-Color_Off='\e[0m'       # Text Reset
+# some custom ls aliases ----- ####################################################
+alias home="cd ~"
+alias em="emacs -nw"
+alias EM="em ~/.emacs"
+alias suem="sudo emacs -nw"
+alias eml="emacs -nw -q -l ./.emacs "
 
-# Regular Colors
-Black='\e[0;30m'        # Black
-Red='\e[0;31m'          # Red
-Green='\e[0;32m'        # Green
-Yellow='\e[0;33m'       # Yellow
-Blue='\e[0;34m'         # Blue
-Purple='\e[0;35m'       # Purple
-Cyan='\e[0;36m'         # Cyan
-White='\e[0;37m'        # White
+alias RHOME="cd /usr/lib/R/"
+alias RPROFILE="em ~/R/.Rprofile"
+alias RENVIRON="em ~/R/.Renviron"
+alias R="R --quiet"
 
-# Bold
-BBlack='\e[1;30m'       # Black
-BRed='\e[1;31m'         # Red
-BGreen='\e[1;32m'       # Green
-BYellow='\e[1;33m'      # Yellow
-BBlue='\e[1;34m'        # Blue
-BPurple='\e[1;35m'      # Purple
-BCyan='\e[1;36m'        # Cyan
-BWhite='\e[1;37m'       # White
+alias rebootWeb="sudo dhclient"
+alias BASHRC="em ~/.bashrc"
+alias SOURCE="source ~/.bashrc"
+alias REBOOT="systemctl reboot"
+alias POWEROFF="systemctl poweroff"
+alias terminator_ebg="terminator -m -b -l config &"
 
-# Underline
-UBlack='\e[4;30m'       # Black
-URed='\e[4;31m'         # Red
-UGreen='\e[4;32m'       # Green
-UYellow='\e[4;33m'      # Yellow
-UBlue='\e[4;34m'        # Blue
-UPurple='\e[4;35m'      # Purple
-UCyan='\e[4;36m'        # Cyan
-UWhite='\e[4;37m'       # White
-
-# Background
-On_Black='\e[40m'       # Black
-On_Red='\e[41m'         # Red
-On_Green='\e[42m'       # Green
-On_Yellow='\e[43m'      # Yellow
-On_Blue='\e[44m'        # Blue
-On_Purple='\e[45m'      # Purple
-On_Cyan='\e[46m'        # Cyan
-On_White='\e[47m'       # White
-
-# High Intensity
-IBlack='\e[0;90m'       # Black
-IRed='\e[0;91m'         # Red
-IGreen='\e[0;92m'       # Green
-IYellow='\e[0;93m'      # Yellow
-IBlue='\e[0;94m'        # Blue
-IPurple='\e[0;95m'      # Purple
-ICyan='\e[0;96m'        # Cyan
-IWhite='\e[0;97m'       # White
-
-# Bold High Intensity
-BIBlack='\e[1;90m'      # Black
-BIRed='\e[1;91m'        # Red
-BIGreen='\e[1;92m'      # Green
-BIYellow='\e[1;93m'     # Yellow
-BIBlue='\e[1;94m'       # Blue
-BIPurple='\e[1;95m'     # Purple
-BICyan='\e[1;96m'       # Cyan
-BIWhite='\e[1;97m'      # White
-
-# High Intensity backgrounds
-On_IBlack='\e[0;100m'   # Black
-On_IRed='\e[0;101m'     # Red
-On_IGreen='\e[0;102m'   # Green
-On_IYellow='\e[0;103m'  # Yellow
-On_IBlue='\e[0;104m'    # Blue
-On_IPurple='\e[0;105m'  # Purple
-On_ICyan='\e[0;106m'    # Cyan
-On_IWhite='\e[0;107m'   # White
-
-RESET='\e[0m'           # Text Reset
-
-ALERT=${BWhite}${On_Red} # Bold White on red background
-#################################################################################
-
-
-####################################################
-#export PYTHONPATH=/usr/lib/python2.7
-#export PATH=$PATH:$PYTHONPATH
-####################################################
-
-# some more ls aliases ----- ####################################################
-alias ll='ls -alF --group-directories-first -A'
-
-#-------------------------------------------------------------
-# The 'ls' family (this assumes you use a recent GNU ls).
-#-------------------------------------------------------------
-# Add colors for filetype and  human-readable sizes by default on 'ls':
-alias ls='ls -h --color'
-alias lx='ls -lXB'         #  Sort by extension.
-alias lk='ls -lSr'         #  Sort by size, biggest last.
-alias lt='ls -ltr'         #  Sort by date, most recent last.
-alias lc='ls -ltcr'        #  Sort by/show change time,most recent last.
-alias la='ls -ltur'        #  Sort by/show access time,most recent last.
-
-# The ubiquitous 'll': directories first, with alphanumeric sorting:
-alias lr='ll -R'           #  Recursive ls.
-alias tree='tree -Csuh'    #  Nice alternative to 'recursive ls' ...
-
-alias home='cd ~'
-alias em='emacs -nw'
-alias EM='em ~/.emacs'
-alias suem='sudo emacs -nw'
-alias eml='emacs -nw -q -l ./.emacs '
-
-alias RHOME='cd /usr/lib/R/'
-alias RPROFILE='em ~/Dropbox/R/Rprofile.site'
-alias RENVIRON='em ~/Dropbox/R/Renviron'
-
-alias rebootWeb='sudo dhclient'
-alias BASHRC='em ~/.bashrc'
-alias SOURCE='source ~/.bashrc'
-alias REBOOT='systemctl reboot'
-alias POWEROFF='systemctl poweroff'
-alias terminator_ebg='terminator -m -b -l ebg &'
-
-alias te='top -u $USER'
-alias trr='top -u root'
-alias tt='top'
-alias cls='clear'
+alias te="top -u $USER"
+alias trr="top -u root"
+alias tt="top"
+alias cls="clear"
 
 alias GG="gitg --all"
 alias GA="git add "
@@ -144,14 +43,14 @@ alias GD="git diff --color --stat "
 
 
 # arch specific commands
-alias UPDATE="sudo ~/bin/update.pacman.sh"
-alias REFRESH="sudo pacman -Syy "
-alias REMOVE="sudo pacman -Rns "
-alias PAC="sudo pacman -S "
-alias UP="sudo pacman -Su "
-alias SYSLOG="tail -f /var/log/Xorg.0.log"
-alias UPXTerm="xrdb -merge ~/.Xresources"
-#alias MAKEPKG="makepkg --clean --cleanbuild"
+alias PACMAN_UPDATE="sudo ~/bin/update.pacman.sh"
+#alias REFRESH="sudo pacman -Syy "
+alias PACMAN_REMOVE="sudo pacman -Rns "
+alias PACMAN_S="sudo pacman -S "
+alias PACMAN_SYU="sudo pacman -Syu "
+#alias XLOG="tail -n 20 -f ~/.local/share/xorg/Xorg.0.log"
+alias XLOG="em ~/.local/share/xorg/Xorg.0.log"
+alias MergeXResources="xrdb -merge ~/.Xresources"
 
 # Compiler output
 alias GCC_ECHO="echo \"int main() { return 0; }\" | gcc -march=native -v -Q -x c - 2>&1"
@@ -168,19 +67,19 @@ alias SIZE="du -ch --max-depth=1 | sort -h; echo 'du -ch --max-depth=1 | sort -h
 alias DIFF="diff --suppress-common-lines --side-by-side --recursive"
 
 
-alias SSH_WEG='ssh WEG@Williams-iMac'
-alias SSH_MOE='ssh -Y -t -p 2222 edward@moe "bash"'
-alias SSH_CURLY='ssh -Y -t -p 2222 edward@curly "bash"'
-alias ECLIPSE='~/JAVA/eclipse/eclipse -vm /usr/lib/jvm/latest/jre/bin &'
+alias SSH_WEG="ssh WEG@Williams-iMac"
+alias SSH_MOE="ssh -Y -t -p 2222 edward@moe \"bash\""
+alias SSH_CURLY="ssh -Y -t -p 2222 edward@curly \"bash\""
 
-
-alias TWS3="cd /home/edward/Dropbox/FX/TWS/IBJts/; java -cp jts.jar:total.2013.jar:hsqldb.jar:jcommon-1.0.12.jar:jfreechart-1.0.9.jar:jhall.jar:other.jar:rss.jar -Xmx2048M  jclient.LoginFrame ."
-alias TWS="cd /home/edward/TWS/IBJts; java -cp jts.jar:total.2013.jar -Xmx512M jclient.LoginFrame ."
-alias TWS2="cd /home/edward/Downloads/IBJts; java -cp jts.jar:total.2013.jar -Xmx1536M -XX:MaxPermSize=512M jclient.LoginFrame ."
+alias ECLIPSE="~/JAVA/eclipse/eclipse -vm /usr/lib/jvm/latest/jre/bin &"
+#alias TWS3="cd $HOME/Dropbox/FX/TWS/IBJts/; java -cp jts.jar:total.2013.jar:hsqldb.jar:jcommon-1.0.12.jar:jfreechart-1.0.9.jar:jhall.jar:other.jar:rss.jar -Xmx2048M  jclient.LoginFrame ."
+alias TWS="cd $HOME/TWS/IBJts; java -cp jts.jar:total.2013.jar -Xmx512M jclient.LoginFrame ."
+# alias TWS2="cd $HOME/Downloads/IBJts; java -cp jts.jar:total.2013.jar -Xmx1536M -XX:MaxPermSize=512M jclient.LoginFrame ."
 
 
 GIT_INIT()
 {
+  # Assumes you do your git work in ~/DEV
   # Begin setting up repo
   git init;
 
@@ -193,7 +92,8 @@ GIT_INIT()
   git add .  ;
   git commit -m "Initial set up -- added README, .gitignore and LICENSE";
 
-  # Create branches from master
+  # Create branches from master: First DEVelop, then TEST, then go into PRODuction
+  # Where master == prod, but may contain stuff that we don't want git to track
   git checkout -b prod;
   git checkout -b dev;
   git checkout -b test;
@@ -217,7 +117,7 @@ GCOPY()
       echo 'git checkout gh-pages'
       echo 'git checkout master foo'
       echo 'git commit -m Add file foo to gh-pages'
-      echo 'DEST=gh-pages,  SOURCE=master,  FILE=foo'
+      echo 'DEST=gh-pages($1),  SOURCE=master($2),  FILE=foo($3)'
 
     fi
 
@@ -275,7 +175,7 @@ SCP()
   if [ $# -eq 0 ]; then
 
     # REMINDER FOR SCP SYNTAX
-    echo "scp   FROM   TO"
+    echo "scp          FROM                    TO"
     echo
     echo "scp -P 1235 ~/LOCAL_FILE  myuser@remoteserver.com:/REMOTE_DIR"
     echo
@@ -349,14 +249,19 @@ pdfextract()
 
 ff()
 {
-#    # this uses 3 arguments:
-#    #     $1 is the ABSOLUTE search path with quotes
-#    #     $2 is the file/dir name, e.g. "*hello_world.c" with quotes
-#    #     $3 is the tag for file or directory, 'f' or 'd' without quotes
-#    #     calls sudo and the 'find' function
-#    #     2> file redirects stderr to file
+  if [ $# -eq 0 ]; then
+    echo "# this uses 3 arguments:"
+    echo '#     $1 is the ABSOLUTE search path with quotes'
+    echo '#     $2 is the file/dir name, e.g. "*hello_world.c" with quotes'
+    echo '#     $3 is the tag for file or directory, 'f' or 'd' without quotes'
+    echo '#     calls sudo and the 'find' function'
+    echo '#     2> file redirects stderr to file'
     echo 'sudo find "$1" -iname "$2" -type "$3" -not -path "~/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>dev/null'
-    sudo find "$1" -iname "$2" -type "$3" -not -path "~/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
+  fi
+
+  if [ $# -gt 0 ]; then
+    sudo find "$1" -iname "$2" -type "$3" -not -path "/home/edward/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
+  fi
 }
 
 
@@ -367,37 +272,28 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
   . /etc/bash_completion
 fi
 
-##  auto-start conky
-#conky_ps='ps -e | grep conky'
-#if [ "$conky_ps" = '' ]; then
-#   . ~/bin/conky_start
-#    sleep 2
-#    clear
-#fi
-
 
 DF()                # Pretty-print of 'df' output.
 {                   # Inspired by 'dfc' utility.
     for fs ; do
 
-    if [ ! -d $fs ]
-    then
-      echo -e $fs" :No such file or directory" ; continue
-    fi
+      if [ ! -d $fs ]; then
+        echo -e $fs" :No such file or directory" ; continue
+      fi
 
-    local info=( $(command df -P $fs | awk 'END{ print $2,$3,$5 }') )
-    local free=( $(command df -Pkh $fs | awk 'END{ print $4 }') )
-    local nbstars=$(( 20 * ${info[1]} / ${info[0]} ))
-    local out="["
-    for ((j=0;j<20;j++)); do
+      local info=( $(command df -P $fs | awk 'END{ print $2,$3,$5 }') )
+      local free=( $(command df -Pkh $fs | awk 'END{ print $4 }') )
+      local nbstars=$(( 20 * ${info[1]} / ${info[0]} ))
+      local out="["
+      for ((j=0;j<20;j++)); do
         if [ ${j} -lt ${nbstars} ]; then
            out=$out"*"
         else
            out=$out"-"
         fi
-    done
-    out=${info[2]}" "$out"] ("$free" free on "$fs")"
-    echo -e $out
+      done
+      out=${info[2]}" "$out"] ("$free" free on "$fs")"
+      echo -e $out
     done
 }
 
@@ -419,7 +315,7 @@ ii()
     echo -e "\n${BRed}Current date :$NC " ; date
     echo -e "\n${BRed}Machine stats :$NC " ; uptime
     echo -e "\n${BRed}Memory stats :$NC " ; free
-    echo -e "\n${BRed}Diskspace :$NC " ; mydf / $HOME
+    echo -e "\n${BRed}Diskspace :$NC " ; DF / $HOME
     echo -e "\n${BRed}Local IP Address :$NC" ; my_ip
     echo -e "\n${BRed}Open connections :$NC "; netstat -pan --inet;
     echo

@@ -24,7 +24,7 @@ esac
 
 
 #################################################################################
-# Everybody shares the same colors for prompts
+# Everybody shares the same colors
 #################################################################################
 Color_Off='\e[0m'       # Text Reset
 
@@ -122,19 +122,21 @@ ALERT=${BWhite}${On_Red} # Bold White on red background
 #    Green $   == normal user
 #    Red #     == root
 # HOST:
-#    pwd $     == local session
-#    pwd [SSH] == secured remote connection (via ssh)
-#    Red [FTP] == unsecured remote connection
+#    pwd Green $      == local session
+#    pwd Yellow [SSH] == secured remote connection (via ssh)
+#    pwd Red [FTP]    == unsecured remote connection
 # PWD:
-#    Blue      == more than 10% free disk space
-#    Orange    == less than 10% free disk space
-#    Red       == current user does not have write privileges
+#    Blue      == more than 25% free disk space
+#    Yellow    == less than 25% free disk space
+#    Bold Red  == less than 10% free disk space
+#    ALERT     == less than 5% free disk space
+#    Bold Red  == current user does not have write privileges
 #################################################################################
 # User type:
 if [[ $EUID == 0 ]]; then
-    SU="\[${BRed}\] #\[${RESET}\]"      # User is root // Needs to be in root .bashrc
+    SU="\[${BRed}\] #\[${RESET}\]"      # User: root. Needs to be in root .bashrc?
 else
-    SU="\[${BGreen}\] $\[${RESET}\]"    # User is normal (well ... most of us are).
+    SU="\[${BGreen}\] $\[${RESET}\]"    # User: regular
 fi
 
 
@@ -223,18 +225,45 @@ case "$TERM" in
 esac
 
 
+#-------------------------------------------------------------
+# Simple aliases for common CLI commands
+#-------------------------------------------------------------
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
 
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
 
-    alias grep='grep --color=auto'
+    alias grep='grep -i --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
 
-extract () {
+
+# some common ls aliases ----- ####################################################
+alias ll='ls -alF --group-directories-first -A'
+
+#-------------------------------------------------------------
+# The 'ls' family (this assumes you use a recent GNU ls).
+#-------------------------------------------------------------
+# Add colors for filetype and  human-readable sizes by default on 'ls':
+alias ls='ls -h --color'
+alias lx='ls -lXB'         #  Sort by extension.
+alias lk='ls -lSr'         #  Sort by size, biggest last.
+alias lt='ls -ltr'         #  Sort by date, most recent last.
+alias lc='ls -ltcr'        #  Sort by/show change time,most recent last.
+alias la='ls -ltur'        #  Sort by/show access time,most recent last.
+
+# The ubiquitous 'll': directories first, with alphanumeric sorting:
+alias lr='ll -R'           #  Recursive ls.
+alias tree='tree -Csuh'    #  Nice alternative to 'recursive ls' ...
+
+
+#-------------------------------------------------------------
+# General de-compress algo everyone can remember
+#-------------------------------------------------------------
+decompress ()
+{
   if [ -f $1 ] ; then
     case $1 in
       *.tar.bz2)  tar xvjf $1     ;;
