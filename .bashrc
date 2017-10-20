@@ -9,22 +9,23 @@
 
 
 # some custom ls aliases ----- ####################################################
-alias home='cd ~'
-alias em='emacs -nw'
-alias EM='em ~/.emacs'
-alias suem='sudo emacs -nw'
-alias eml='emacs -nw -q -l ./.emacs '
+alias home="cd ~"
+alias em="emacs -nw"
+alias EM="em ~/.emacs"
+alias suem="sudo emacs -nw"
+alias eml="emacs -nw -q -l ./.emacs "
 
-alias RHOME='cd /usr/lib/R/'
-alias RPROFILE='em ~/Dropbox/R/Rprofile.site'
-alias RENVIRON='em ~/Dropbox/R/Renviron'
+alias RHOME="cd /usr/lib/R/"
+alias RPROFILE="em ~/R/.Rprofile"
+alias RENVIRON="em ~/R/.Renviron"
+alias R="R --quiet"
 
-alias rebootWeb='sudo dhclient'
-alias BASHRC='em ~/.bashrc'
-alias SOURCE='source ~/.bashrc'
-alias REBOOT='systemctl reboot'
-alias POWEROFF='systemctl poweroff'
-alias terminator_ebg='terminator -m -b -l ebg &'
+alias rebootWeb="sudo dhclient"
+alias BASHRC="em ~/.bashrc"
+alias SOURCE="source ~/.bashrc"
+alias REBOOT="systemctl reboot"
+alias POWEROFF="systemctl poweroff"
+alias terminator_ebg="terminator -m -b -l config &"
 
 alias te="top -u $USER"
 alias trr="top -u root"
@@ -42,14 +43,14 @@ alias GD="git diff --color --stat "
 
 
 # arch specific commands
-alias UPDATE="sudo ~/bin/update.pacman.sh"
-alias REFRESH="sudo pacman -Syy "
-alias REMOVE="sudo pacman -Rns "
-alias PAC="sudo pacman -S "
-alias UP="sudo pacman -Su "
-alias SYSLOG="tail -f /var/log/Xorg.0.log"
-alias UPXTerm="xrdb -merge ~/.Xresources"
-#alias MAKEPKG="makepkg --clean --cleanbuild"
+alias PACMAN_UPDATE="sudo ~/bin/update.pacman.sh"
+#alias REFRESH="sudo pacman -Syy "
+alias PACMAN_REMOVE="sudo pacman -Rns "
+alias PACMAN_S="sudo pacman -S "
+alias PACMAN_SYU="sudo pacman -Syu "
+#alias XLOG="tail -n 20 -f ~/.local/share/xorg/Xorg.0.log"
+alias XLOG="em ~/.local/share/xorg/Xorg.0.log"
+alias MergeXResources="xrdb -merge ~/.Xresources"
 
 # Compiler output
 alias GCC_ECHO="echo \"int main() { return 0; }\" | gcc -march=native -v -Q -x c - 2>&1"
@@ -66,12 +67,11 @@ alias SIZE="du -ch --max-depth=1 | sort -h; echo 'du -ch --max-depth=1 | sort -h
 alias DIFF="diff --suppress-common-lines --side-by-side --recursive"
 
 
-alias SSH_WEG='ssh WEG@Williams-iMac'
-alias SSH_MOE='ssh -Y -t -p 2222 edward@moe "bash"'
-alias SSH_CURLY='ssh -Y -t -p 2222 edward@curly "bash"'
-alias ECLIPSE='~/JAVA/eclipse/eclipse -vm /usr/lib/jvm/latest/jre/bin &'
+alias SSH_WEG="ssh WEG@Williams-iMac"
+alias SSH_MOE="ssh -Y -t -p 2222 edward@moe \"bash\""
+alias SSH_CURLY="ssh -Y -t -p 2222 edward@curly \"bash\""
 
-
+alias ECLIPSE="~/JAVA/eclipse/eclipse -vm /usr/lib/jvm/latest/jre/bin &"
 #alias TWS3="cd $HOME/Dropbox/FX/TWS/IBJts/; java -cp jts.jar:total.2013.jar:hsqldb.jar:jcommon-1.0.12.jar:jfreechart-1.0.9.jar:jhall.jar:other.jar:rss.jar -Xmx2048M  jclient.LoginFrame ."
 alias TWS="cd $HOME/TWS/IBJts; java -cp jts.jar:total.2013.jar -Xmx512M jclient.LoginFrame ."
 # alias TWS2="cd $HOME/Downloads/IBJts; java -cp jts.jar:total.2013.jar -Xmx1536M -XX:MaxPermSize=512M jclient.LoginFrame ."
@@ -92,7 +92,8 @@ GIT_INIT()
   git add .  ;
   git commit -m "Initial set up -- added README, .gitignore and LICENSE";
 
-  # Create branches from master
+  # Create branches from master: First DEVelop, then TEST, then go into PRODuction
+  # Where master == prod, but may contain stuff that we don't want git to track
   git checkout -b prod;
   git checkout -b dev;
   git checkout -b test;
@@ -248,14 +249,19 @@ pdfextract()
 
 ff()
 {
-    # this uses 3 arguments:
-    #     $1 is the ABSOLUTE search path with quotes
-    #     $2 is the file/dir name, e.g. "*hello_world.c" with quotes
-    #     $3 is the tag for file or directory, 'f' or 'd' without quotes
-    #     calls sudo and the 'find' function
-    #     2> file redirects stderr to file
+  if [ $# -eq 0 ]; then
+    echo "# this uses 3 arguments:"
+    echo '#     $1 is the ABSOLUTE search path with quotes'
+    echo '#     $2 is the file/dir name, e.g. "*hello_world.c" with quotes'
+    echo '#     $3 is the tag for file or directory, 'f' or 'd' without quotes'
+    echo '#     calls sudo and the 'find' function'
+    echo '#     2> file redirects stderr to file'
     echo 'sudo find "$1" -iname "$2" -type "$3" -not -path "~/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>dev/null'
-    sudo find "$1" -iname "$2" -type "$3" -not -path "~/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
+  fi
+
+  if [ $# -gt 0 ]; then
+    sudo find "$1" -iname "$2" -type "$3" -not -path "/home/edward/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
+  fi
 }
 
 
