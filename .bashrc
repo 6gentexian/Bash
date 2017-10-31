@@ -1,38 +1,21 @@
-<<<<<<< HEAD
-=======
 #!/bin/bash
 #
->>>>>>> test
 # ~/.bashrc: executed by bash(1) for non-login shells.
 #
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
-<<<<<<< HEAD
-#################################################################################
-=======
 ################################################################################
->>>>>>> test
+
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
 
-<<<<<<< HEAD
-# some custom ls aliases ----- ####################################################
-=======
 # some custom ls aliases ----- #################################################
->>>>>>> test
 alias home="cd ~"
 alias em="emacs -nw"
 alias EM="em ~/.emacs"
 alias suem="sudo emacs -nw"
-<<<<<<< HEAD
-alias eml="emacs -nw -q -l ./.emacs "
-
-alias RHOME="cd /usr/lib/R/"
-alias RPROFILE="em ~/R/.Rprofile"
-alias RENVIRON="em ~/R/.Renviron"
-=======
 # Edit .emacs WITHOUT LOADING init files
 alias eml="emacs -nw -q -l ./.emacs "
 
@@ -40,7 +23,6 @@ alias RHOME="cd /usr/lib/R/"
 alias RUSER="~/R"
 alias RPROFILE="em RUSER/.Rprofile"
 alias RENVIRON="em RUSER/.Renviron"
->>>>>>> test
 alias R="R --quiet"
 
 alias rebootWeb="sudo dhclient"
@@ -48,45 +30,22 @@ alias BASHRC="em ~/.bashrc"
 alias SOURCE="source ~/.bashrc"
 alias REBOOT="systemctl reboot"
 alias POWEROFF="systemctl poweroff"
-<<<<<<< HEAD
-alias terminator_ebg="terminator -m -b -l config &"
-=======
 alias terminator_ebg="terminator -m -b -l ebg &"
->>>>>>> test
 
 alias te="top -u $USER"
 alias trr="top -u root"
 alias tt="top"
 alias cls="clear"
 
-<<<<<<< HEAD
-alias GG="gitg --all"
-alias GA="git add "
-alias GC="git checkout "
-alias GS="git status"
-alias GB="git branch"
-alias GL="git ls-files"
-alias GM="git commit -m "
-alias GD="git diff --color --stat "
-
-
-# arch specific commands
-alias PACMAN_UPDATE="sudo ~/bin/update.pacman.sh"
-#alias REFRESH="sudo pacman -Syy "
-=======
 # ARCH specific commands
 alias PACMAN_UPDATE="sudo ~/bin/update.pacman.sh"
->>>>>>> test
 alias PACMAN_REMOVE="sudo pacman -Rns "
 alias PACMAN_S="sudo pacman -S "
 alias PACMAN_SYU="sudo pacman -Syu "
 #alias XLOG="tail -n 20 -f ~/.local/share/xorg/Xorg.0.log"
 alias XLOG="em ~/.local/share/xorg/Xorg.0.log"
 alias MergeXResources="xrdb -merge ~/.Xresources"
-<<<<<<< HEAD
-=======
 alias LoadXResources="xrdb -load ~/.Xresources"
->>>>>>> test
 
 # Compiler output
 alias GCC_ECHO="echo \"int main() { return 0; }\" | gcc -march=native -v -Q -x c - 2>&1"
@@ -113,8 +72,6 @@ alias TWS="cd $HOME/TWS/IBJts; java -cp jts.jar:total.2013.jar -Xmx512M jclient.
 # alias TWS2="cd $HOME/Downloads/IBJts; java -cp jts.jar:total.2013.jar -Xmx1536M -XX:MaxPermSize=512M jclient.LoginFrame ."
 
 
-<<<<<<< HEAD
-=======
 # GIT aliases ----- ############################################################
 alias GG="gitg --all"
 alias GA="git add "
@@ -130,7 +87,6 @@ alias GLS="git ls-files"
 
 alias GD="git diff --color --stat "
 
->>>>>>> test
 GIT_INIT()
 {
   # Assumes you do your git work in ~/DEV
@@ -149,10 +105,6 @@ GIT_INIT()
   # Create branches from master: First DEVelop, then TEST, then go into PRODuction
   # Where master == prod, but may contain stuff that we don't want git to track
   git checkout -b prod;
-<<<<<<< HEAD
-  git checkout -b dev;
-=======
->>>>>>> test
   git checkout -b test;
 
   # Thus establishing updating hierarchy:
@@ -304,8 +256,6 @@ pdfextract()
          ${3}
 }
 
-<<<<<<< HEAD
-=======
 fwf()
 {
     ## Find Word in File ---------------------------------------------------------
@@ -344,7 +294,7 @@ echo "        grep --exclude-dir={dir1,dir2,*.dst} -rnw '/path/to/somewhere/' -e
     sudo find "$1" -iname "$2" -type "$3" -not -path "/home/edward/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
   fi
 }
->>>>>>> test
+
 ff()
 {
   if [ $# -eq 0 ]; then
