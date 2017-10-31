@@ -62,16 +62,6 @@ alias SIZE="du -ch --max-depth=1 | sort -h; echo 'du -ch --max-depth=1 | sort -h
 alias DIFF="diff --suppress-common-lines --side-by-side --recursive"
 
 
-alias SSH_WEG="ssh WEG@Williams-iMac"
-alias SSH_MOE="ssh -Y -t -p 2222 edward@moe \"bash\""
-alias SSH_CURLY="ssh -Y -t -p 2222 edward@curly \"bash\""
-
-alias ECLIPSE="~/JAVA/eclipse/eclipse -vm /usr/lib/jvm/latest/jre/bin &"
-#alias TWS3="cd $HOME/Dropbox/FX/TWS/IBJts/; java -cp jts.jar:total.2013.jar:hsqldb.jar:jcommon-1.0.12.jar:jfreechart-1.0.9.jar:jhall.jar:other.jar:rss.jar -Xmx2048M  jclient.LoginFrame ."
-alias TWS="cd $HOME/TWS/IBJts; java -cp jts.jar:total.2013.jar -Xmx512M jclient.LoginFrame ."
-# alias TWS2="cd $HOME/Downloads/IBJts; java -cp jts.jar:total.2013.jar -Xmx1536M -XX:MaxPermSize=512M jclient.LoginFrame ."
-
-
 # GIT aliases ----- ############################################################
 alias GG="gitg --all"
 alias GA="git add "
@@ -258,6 +248,7 @@ pdfextract()
 
 fwf()
 {
+## In progress
     ## Find Word in File ---------------------------------------------------------
 echo "    grep -rnw '/path/to/somewhere/' -e 'pattern'"
 echo "    WHERE:"
@@ -291,7 +282,7 @@ echo "        grep --exclude-dir={dir1,dir2,*.dst} -rnw '/path/to/somewhere/' -e
   fi
 
    if [ $# -gt 0 ]; then
-    sudo find "$1" -iname "$2" -type "$3" -not -path "/home/edward/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
+    sudo find "$1" -iname "$2" -type "$3" -not -path "~/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
   fi
 }
 
@@ -308,7 +299,7 @@ ff()
   fi
 
   if [ $# -gt 0 ]; then
-    sudo find "$1" -iname "$2" -type "$3" -not -path "/home/edward/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
+    sudo find "$1" -iname "$2" -type "$3" -not -path "~/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
   fi
 }
 
