@@ -2,15 +2,12 @@
 #
 # ~/.bash_profile
 #
-#################################################################################
-
 # NB: Do not set the TERM variable from ~/.bashrc or ~/.bash_profile, etc
-
+################################################################################
 
 source $HOME/.profile
 
 source $HOME/.bashrc
-
 
 
 
