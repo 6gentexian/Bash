@@ -27,7 +27,7 @@ Command Line Format:
   Terminal Title Format:
     user@host: PWD, e.g. bob@bobsarchbox ~/bin
 ```
-The terminal prompt is bold and of course updates as you navigate about.
+The terminal prompt is bold and of course updates as you navigate about.  
 n.b. For both, 'PWD $', is displayed as:  '~ $'  for the home directory
 
 ## .bash_profile

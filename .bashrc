@@ -1,23 +1,27 @@
+#!/bin/bash
+#
 # ~/.bashrc: executed by bash(1) for non-login shells.
 #
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
-#################################################################################
+################################################################################
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
 
-# some custom ls aliases ----- ####################################################
+# some custom ls aliases ----- #################################################
 alias home="cd ~"
 alias em="emacs -nw"
 alias EM="em ~/.emacs"
 alias suem="sudo emacs -nw"
+# Edit .emacs WITHOUT LOADING init files
 alias eml="emacs -nw -q -l ./.emacs "
 
 alias RHOME="cd /usr/lib/R/"
-alias RPROFILE="em ~/R/.Rprofile"
-alias RENVIRON="em ~/R/.Renviron"
+alias RUSER="~/R"
+alias RPROFILE="em RUSER/.Rprofile"
+alias RENVIRON="em RUSER/.Renviron"
 alias R="R --quiet"
 
 alias rebootWeb="sudo dhclient"
@@ -25,32 +29,22 @@ alias BASHRC="em ~/.bashrc"
 alias SOURCE="source ~/.bashrc"
 alias REBOOT="systemctl reboot"
 alias POWEROFF="systemctl poweroff"
-alias terminator_ebg="terminator -m -b -l config &"
+alias terminator_ebg="terminator -m -b -l ebg &"
 
 alias te="top -u $USER"
 alias trr="top -u root"
 alias tt="top"
 alias cls="clear"
 
-alias GG="gitg --all"
-alias GA="git add "
-alias GC="git checkout "
-alias GS="git status"
-alias GB="git branch"
-alias GL="git ls-files"
-alias GM="git commit -m "
-alias GD="git diff --color --stat "
-
-
-# arch specific commands
+# ARCH specific commands
 alias PACMAN_UPDATE="sudo ~/bin/update.pacman.sh"
-#alias REFRESH="sudo pacman -Syy "
 alias PACMAN_REMOVE="sudo pacman -Rns "
 alias PACMAN_S="sudo pacman -S "
 alias PACMAN_SYU="sudo pacman -Syu "
 #alias XLOG="tail -n 20 -f ~/.local/share/xorg/Xorg.0.log"
 alias XLOG="em ~/.local/share/xorg/Xorg.0.log"
 alias MergeXResources="xrdb -merge ~/.Xresources"
+alias LoadXResources="xrdb -load ~/.Xresources"
 
 # Compiler output
 alias GCC_ECHO="echo \"int main() { return 0; }\" | gcc -march=native -v -Q -x c - 2>&1"
@@ -77,6 +71,21 @@ alias TWS="cd $HOME/TWS/IBJts; java -cp jts.jar:total.2013.jar -Xmx512M jclient.
 # alias TWS2="cd $HOME/Downloads/IBJts; java -cp jts.jar:total.2013.jar -Xmx1536M -XX:MaxPermSize=512M jclient.LoginFrame ."
 
 
+# GIT aliases ----- ############################################################
+alias GG="gitg --all"
+alias GA="git add "
+
+alias GM="git commit -m "
+alias GAM="git commit -am "
+
+alias GC="git checkout "
+alias GS="git status"
+
+alias GB="git branch"
+alias GLS="git ls-files"
+
+alias GD="git diff --color --stat "
+
 GIT_INIT()
 {
   # Assumes you do your git work in ~/DEV
@@ -95,7 +104,6 @@ GIT_INIT()
   # Create branches from master: First DEVelop, then TEST, then go into PRODuction
   # Where master == prod, but may contain stuff that we don't want git to track
   git checkout -b prod;
-  git checkout -b dev;
   git checkout -b test;
 
   # Thus establishing updating hierarchy:
@@ -247,6 +255,44 @@ pdfextract()
          ${3}
 }
 
+fwf()
+{
+    ## Find Word in File ---------------------------------------------------------
+echo "    grep -rnw '/path/to/somewhere/' -e 'pattern'"
+echo "    WHERE:"
+echo "        -r or -R is recursive,"
+echo "        -n is line number, and"
+echo "        -w stands for match the whole word."
+echo "        -l (lower-case L) can be added to just give the file name of matching files."
+echo ""
+echo "    Along with these, --exclude, --include, --exclude-dir or --include-dir flags could be used for efficient searching:"
+
+echo "    This will only search through those files which have .c or .h extensions:"
+
+echo "        grep --include=\*.{c,h} -rnw '/path/to/somewhere/' -e "pattern""
+
+echo "    This will exclude searching all the files ending with .o extension:"
+
+echo "        grep --exclude=*.o -rnw '/path/to/somewhere/' -e "pattern""
+
+echo "        Just like exclude files, it's possible to exclude/include directories through --exclude-dir and --include-dir parameter. For example, this will exclude the dirs dir1/, dir2/ and all of them matching *.dst/:"
+
+echo "        grep --exclude-dir={dir1,dir2,*.dst} -rnw '/path/to/somewhere/' -e "pattern""
+
+  if [ $# -eq 0 ]; then
+    echo "# this uses 3 arguments:"
+    echo '#     $1 is the ABSOLUTE search path with quotes'
+    echo '#     $2 is the file/dir name, e.g. "*hello_world.c" with quotes'
+    echo '#     $3 is the tag for file or directory, 'f' or 'd' without quotes'
+    echo '#     calls sudo and the 'find' function'
+    echo '#     2> file redirects stderr to file'
+    echo 'sudo find "$1" -iname "$2" -type "$3" -not -path "~/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>dev/null'
+  fi
+
+   if [ $# -gt 0 ]; then
+    sudo find "$1" -iname "$2" -type "$3" -not -path "/home/edward/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
+  fi
+}
 ff()
 {
   if [ $# -eq 0 ]; then

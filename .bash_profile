@@ -1,10 +1,10 @@
 #!/bin/bash
 #
-# bash_profile
+# ~/.bash_profile
 #
 #################################################################################
 
-# Do not set the TERM variable from your ~/.bashrc or ~/.bash_profile or similar file
+# NB: Do not set the TERM variable from ~/.bashrc or ~/.bash_profile, etc
 
 source $HOME/.profile
 
