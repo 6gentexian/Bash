@@ -5,77 +5,50 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 ################################################################################
+echo "Sourcing ${HOME}/.bashrc..."
+
+echo "Sourcing ${HOME}/.bash_aliases..."
+source ./bash_aliases
 
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+  . /etc/bash_completion
+fi
 
-# some custom ls aliases ----- #################################################
-alias home="cd ~"
-alias em="emacs -nw"
-alias EM="em ~/.emacs"
-alias suem="sudo emacs -nw"
-# Edit .emacs WITHOUT LOADING init files
-alias eml="emacs -nw -q -l ./.emacs "
+#-------------------------------------------------------------------------------
+# Load user aliases
+if [ -f ~/.bash_aliases ] ; then
+  source ~/.bash_aliases
+fi
 
-alias RHOME="cd /usr/lib/R/"
-alias RUSER="~/R"
-alias RPROFILE="em RUSER/.Rprofile"
-alias RENVIRON="em RUSER/.Renviron"
-alias R="R --quiet"
+#-------------------------------------------------------------------------------
+# Search for a process containing a given name
+function pps() {
+  ps aux | grep "$@" | grep -v 'grep';
+}
 
-alias rebootWeb="sudo dhclient"
-alias BASHRC="em ~/.bashrc"
-alias SOURCE="source ~/.bashrc"
-alias REBOOT="systemctl reboot"
-alias POWEROFF="systemctl poweroff"
-alias terminator_ebg="terminator -m -b -l ebg &"
+#-------------------------------------------------------------------------------
+# Shorter history
+# The HISTCONTROL variable can prevent certain commands from being logged to  the history. For example, to stop logging of repeated identical commands
+export HISTCONTROL=ignoredups
 
-alias te="top -u $USER"
-alias trr="top -u root"
-alias tt="top"
-alias cls="clear"
-
-# ARCH specific commands
-alias PACMAN_UPDATE="sudo ~/bin/update.pacman.sh"
-alias PACMAN_REMOVE="sudo pacman -Rns "
-alias PACMAN_S="sudo pacman -S "
-alias PACMAN_SYU="sudo pacman -Syu "
-#alias XLOG="tail -n 20 -f ~/.local/share/xorg/Xorg.0.log"
-alias XLOG="em ~/.local/share/xorg/Xorg.0.log"
-alias MergeXResources="xrdb -merge ~/.Xresources"
-alias LoadXResources="xrdb -load ~/.Xresources"
-
-# Compiler output
-alias GCC_ECHO="echo \"int main() { return 0; }\" | gcc -march=native -v -Q -x c - 2>&1"
-alias GCC_HELP="gcc -v -Q  -march=native --help=target"
-
-# navigation
-alias CD="cd ../"
-alias CDCD="cd ../../"
-
-# Use human-readable filesizes
-alias df="df -h"
-alias du="du -ch --max-depth=1"
-alias SIZE="du -ch --max-depth=1 | sort -h; echo 'du -ch --max-depth=1 | sort -h'"
-alias DIFF="diff --suppress-common-lines --side-by-side --recursive"
-
-
-# GIT aliases ----- ############################################################
-alias GG="gitg --all"
-alias GA="git add "
-
-alias GM="git commit -m "
-alias GAM="git commit -am "
-
-alias GC="git checkout "
-alias GS="git status"
-
-alias GB="git branch"
-alias GLS="git ls-files"
-
-alias GD="git diff --color --stat "
+#-------------------------------------------------------------------------------
+#Very often changing to a directory is followed by the ls command to list its contents. Therefore it is helpful to have a second function doing both at once. In this example we will name it cdl (change directory, list) and show an error message if the specified directory does not exist.
+cdl() {
+	local dir="$1"
+	local dir="${dir:=$HOME}"
+	if [[ -d "$dir" ]]; then
+		cd "$dir" >/dev/null; ls
+	else
+		echo "bash: cdl: $dir: Directory not found"
+	fi
+}
 
 GIT_INIT()
 {
@@ -248,41 +221,33 @@ pdfextract()
 
 fwf()
 {
-## In progress
-    ## Find Word in File ---------------------------------------------------------
-echo "    grep -rnw '/path/to/somewhere/' -e 'pattern'"
-echo "    WHERE:"
-echo "        -r or -R is recursive,"
-echo "        -n is line number, and"
-echo "        -w stands for match the whole word."
-echo "        -l (lower-case L) can be added to just give the file name of matching files."
-echo ""
-echo "    Along with these, --exclude, --include, --exclude-dir or --include-dir flags could be used for efficient searching:"
-
-echo "    This will only search through those files which have .c or .h extensions:"
-
-echo "        grep --include=\*.{c,h} -rnw '/path/to/somewhere/' -e "pattern""
-
-echo "    This will exclude searching all the files ending with .o extension:"
-
-echo "        grep --exclude=*.o -rnw '/path/to/somewhere/' -e "pattern""
-
-echo "        Just like exclude files, it's possible to exclude/include directories through --exclude-dir and --include-dir parameter. For example, this will exclude the dirs dir1/, dir2/ and all of them matching *.dst/:"
-
-echo "        grep --exclude-dir={dir1,dir2,*.dst} -rnw '/path/to/somewhere/' -e "pattern""
-
   if [ $# -eq 0 ]; then
-    echo "# this uses 3 arguments:"
-    echo '#     $1 is the ABSOLUTE search path with quotes'
-    echo '#     $2 is the file/dir name, e.g. "*hello_world.c" with quotes'
-    echo '#     $3 is the tag for file or directory, 'f' or 'd' without quotes'
-    echo '#     calls sudo and the 'find' function'
-    echo '#     2> file redirects stderr to file'
-    echo 'sudo find "$1" -iname "$2" -type "$3" -not -path "~/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>dev/null'
+  ## Find Word in File ---------------------------------------------------------
+    echo "    grep -rnw '/path/to/somewhere/' -e 'pattern'"
+    echo "    WHERE:"
+    echo "        -r or -R is recursive,"
+    echo "        -n is line number, and"
+    echo "        -w stands for match the whole word."
+    echo "        -l (lower-case L) can be added to give the name of matching files."
+    echo ""
+    echo "    Along with these, --exclude, --include, --exclude-dir or --include-dir flags could be used for efficient searching:"
+
+    echo "    Search ONLY through those files which have .c or .h extensions:"
+    echo "        grep --include=\*.{c,h} -rnw '/path/to/somewhere/' -e \"pattern\""
+
+    echo "    Exclude searching ALL files ending with .o extension:"
+    echo "        grep --exclude=*.o -rnw '/path/to/somewhere/' -e \"pattern\""
+
+    echo "    Just like exclude files, it's possible to exclude/include directories through --exclude-dir and --include-dir parameter."
+    echo "    For example, this will exclude the dirs: dir1/, dir2/ and all of them matching *.dst/:"
+    echo "        grep --exclude-dir={dir1,dir2,*.dst} -rnw '/path/to/somewhere/' -e \"pattern\""}
   fi
 
-   if [ $# -gt 0 ]; then
-    sudo find "$1" -iname "$2" -type "$3" -not -path "~/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
+   if [ $# -eq 2 ]; then
+     echo "";      echo ""
+     echo "Finding $2 in files in $1 path"
+     grep -rnw "$1" -e "$2"
+     echo "";      echo ""
   fi
 }
 
@@ -299,18 +264,9 @@ ff()
   fi
 
   if [ $# -gt 0 ]; then
-    sudo find "$1" -iname "$2" -type "$3" -not -path "~/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
+    sudo find "$1" -iname "$2" -type "$3" -not -path "/home/edward/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
   fi
 }
-
-
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-  . /etc/bash_completion
-fi
-
 
 DF()                # Pretty-print of 'df' output.
 {                   # Inspired by 'dfc' utility.
