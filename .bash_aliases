@@ -44,6 +44,7 @@ alias dmesg="dmesg -HL"
 # Safety features
 alias mv="mv -i"
 alias rm="rm -I"
+
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 # Emacs
@@ -118,7 +119,7 @@ alias gadd="git add "
 alias gm="git commit -m "
 alias gma="git commit -am "
 
-alias gccheckout="git checkout "
+alias gcheckout="git checkout "
 alias gstatus="git status"
 
 alias gbranch="git branch -a --color"
@@ -140,8 +141,8 @@ alias gcc_help="gcc -v -Q  -march=native --help=target"
 #-------------------------------------------------------------------------------
 # SSH
 alias ssh_weg="ssh WEG@Williams-iMac"
-alias ssh_moe="ssh -Y -t -p 2222 edward@moe \"bash\""
-alias ssh_curly="ssh -Y -t -p 2222 edward@curly \"bash\""
+alias ssh_moe="ssh -Y -t -p 2222 $USER@moe \"bash\""
+alias ssh_curly="ssh -Y -t -p 2222 $USER@curly \"bash\""
 
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -149,11 +150,3 @@ alias ssh_curly="ssh -Y -t -p 2222 edward@curly \"bash\""
 alias CD="cd ../"
 alias CDCD="cd ../../"
 alias home="cd ~/"
-
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-# Misc
-alias ECLIPSE="~/JAVA/eclipse/eclipse -vm /usr/lib/jvm/latest/jre/bin &"
-#alias TWS3="cd $HOME/Dropbox/FX/TWS/IBJts/; java -cp jts.jar:total.2013.jar:hsqldb.jar:jcommon-1.0.12.jar:jfreechart-1.0.9.jar:jhall.jar:other.jar:rss.jar -Xmx2048M  jclient.LoginFrame ."
-alias TWS="cd $HOME/TWS/IBJts; java -cp jts.jar:total.2013.jar -Xmx512M jclient.LoginFrame ."
-# alias TWS2="cd $HOME/Downloads/IBJts; java -cp jts.jar:total.2013.jar -Xmx1536M -XX:MaxPermSize=512M jclient.LoginFrame ."
