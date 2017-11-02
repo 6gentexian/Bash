@@ -131,6 +131,7 @@ alias glog="git log --pretty=oneline"
 alias gpush="git push"
 alias gpull="git pull"
 
+alias gpremote="git checkout master; git push origin master; git remote -v; git remote show origin"
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 # Compiler output
