@@ -20,9 +20,9 @@ fi
 
 #-------------------------------------------------------------------------------
 # Load user aliases
-echo "Sourcing ${HOME}/.bash_aliases..."
 if [ -f ~/.bash_aliases ] ; then
-  source ~/.bash_aliases
+    echo "Sourcing ${HOME}/.bash_aliases..."
+    source ~/.bash_aliases
 fi
 
 #-------------------------------------------------------------------------------
@@ -32,17 +32,12 @@ function pps() {
 }
 
 #-------------------------------------------------------------------------------
-# Shorter history
-# The HISTCONTROL variable can prevent certain commands from being logged to  the history. For example, to stop logging of repeated identical commands
-export HISTCONTROL=ignoredups
-
-#-------------------------------------------------------------------------------
 #Very often changing to a directory is followed by the ls command to list its contents. Therefore it is helpful to have a second function doing both at once. In this example we will name it cdl (change directory, list) and show an error message if the specified directory does not exist.
 cdl() {
     local dir="$1"
     local dir="${dir:=$HOME}"
     if [[ -d "$dir" ]]; then
-        cd "$dir" >/dev/null; ls
+        cd "$dir" >/dev/null; ls -al --color | more
     else
         echo "bash: cdl: $dir: Directory not found"
     fi
@@ -262,7 +257,7 @@ ff()
   fi
 
   if [ $# -gt 0 ]; then
-    sudo find "$1" -iname "$2" -type "$3" -not -path "$HOME/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
+    sudo find "$1" -iname "$2" -type "$3" -not -path "/home/edward/Dropbox/moe/*" -not -path "/archive/*" -not -path "/backup/*" 2>/dev/null
   fi
 }
 
