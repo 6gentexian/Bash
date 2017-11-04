@@ -1,6 +1,6 @@
 #!/bin/bash
-#################################################################################
-##  ~/bin/PACMAN/update.pacman.sh  ->  ~/bin/update.pacman.sh
+################################################################################
+##  ln -s ~/bin/PACMAN/update.pacman.sh  ->  ~/bin/update.pacman.sh
 ##
 ##
 ##  DEPENDENCIES:
@@ -13,15 +13,13 @@
 ##  USE:  Place on your path (e.g) in your home bin directory (~/bin)
 ##        Make executable, run  $ update.pacman.sh
 ##
-##  TODOs:	Audit
-##			Move to git
+##  TODOs:
 ##			Create auditable 'archnews.html' file
-##			AUR helper update code
 ##
 ##  NB
-#################################################################################
+################################################################################
 pause_function() {
-  # print_line
+  # print_line and collect imput
   #   read -e -sn 1 -p "Press enter to continue..."
     while true; do
         read -p "Do you wish to continue updating? [y/n]" yn
@@ -33,6 +31,12 @@ pause_function() {
     done
 }
 #################################################################################
+# put the 3 next evho statements into vars and inject them into pause_fcn()
+CACHE5      = "Make sure that only the latest 5 versions are cached"
+UNINSTALLED = "Remove all cached versions of uninstalled packages"
+UNUSEDDBS   = "Remove all unused, unsynced databases"
+
+
 # Make sure that only the latest 5 versions are cached
 echo "Make sure that only the latest 5 versions are cached"
 sudo paccache -rk 5
@@ -44,7 +48,7 @@ sudo paccache -ruk0
 echo ""; echo ""
 
 # Remove all the cached packages that are not currently installed:
-echo "Remove all the cached packages that are not currently installed"
+echo "Remove all unused, unsynced databases"
 sudo pacman -Sc
 echo ""; echo ""
 #################################################################################
@@ -61,6 +65,7 @@ echo "Updating the mirrorlist - Selecting the fastest US mirrors: /etc/pacman.d/
 sudo cp -u /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig
 sudo reflector --verbose --country 'United States' --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 echo ""; echo ""
+
 # AUDIT URL FILE
 emacs /etc/pacman.d/mirrorlist
 echo ""; echo ""
@@ -100,8 +105,19 @@ echo ""; echo ""
 echo "All orphaned packages: Packages that were installed as depedencies but are now not needed"
 sudo pacman -Qdt
 echo ""; echo ""
-#################################################################################
+################################################################################
 
-# yaourt -Syu --aur
+################################################################################
+# Update the packages from the AUR
+echo ""; echo ""
+yaourt -Syu --aur
+echo ""; echo ""
+
+
+# Creating list of all yaourt orphaned packages
+echo "All orphaned packages: Packages that were installed as depedencies but are now not needed"
+yaourt -Qdt
+echo ""; echo ""
+################################################################################
 
 exit 0
