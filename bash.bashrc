@@ -1,6 +1,8 @@
+#!/bin/bash
 #
 # /etc/bash.bashrc
 #
+################################################################################
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -23,9 +25,9 @@ esac
 [ -r /usr/share/bash-completion/bash_completion   ] && . /usr/share/bash-completion/bash_completion
 
 
-#################################################################################
+################################################################################
 # Everybody shares the same colors
-#################################################################################
+################################################################################
 Color_Off='\e[0m'       # Text Reset
 
 # Regular Colors
@@ -101,15 +103,16 @@ On_IWhite='\e[0;107m'   # White
 RESET='\e[0m'           # Text Reset
 
 ALERT=${BWhite}${On_Red} # Bold White on red background
-#################################################################################
+################################################################################
 
 
-#################################################################################
+################################################################################
 ##  Assign prompt for root and users
-#################################################################################
+################################################################################
 
-
-## - COLOR PROMPT - #############################################################
+################################################################################
+## - COLOR PROMPT -
+################################################################################
 #-------------------------------------------------------------
 # Shell Prompt - for many examples, see:
 #       http://www.debian-administration.org/articles/205
@@ -131,7 +134,7 @@ ALERT=${BWhite}${On_Red} # Bold White on red background
 #    Bold Red  == less than 10% free disk space
 #    ALERT     == less than 5% free disk space
 #    Bold Red  == current user does not have write privileges
-#################################################################################
+################################################################################
 # User type:
 if [[ $EUID == 0 ]]; then
     SU="\[${BRed}\] #\[${RESET}\]"      # User: root. Needs to be in root .bashrc?
@@ -139,7 +142,8 @@ else
     SU="\[${BGreen}\] $\[${RESET}\]"    # User: regular
 fi
 
-
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # Test connection type:
 if [ -n "$SSH_CLIENT" ]; then
     CNX="\[${BYellow}\] [SSH]\[${RESET}\]"     # Connected on remote machine, via ssh (good).
@@ -152,6 +156,8 @@ else
     CNX=""                                     # Connected on local machine.
 fi
 
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # Returns a color according to free disk space in $PWD.
 disk_color()
 {
@@ -193,70 +199,42 @@ esac
 
 
 
-
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
 HISTCONTROL=ignoredups:ignorespace
 
 # append to the history file, don't overwrite it
+# make less more friendly for non-text input files, see lesspipe(1)
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
 HISTFILESIZE=20000
 
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-# make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# The 'ls' family (this assumes you use a recent GNU ls).
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
     xterm-256color)
     color_prompt=yes
     ;;
 esac
-
-
-#-------------------------------------------------------------
-# Simple aliases for common CLI commands
-#-------------------------------------------------------------
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-
-    alias grep='grep -i --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
-
-# some common ls aliases ----- ####################################################
-alias ll='ls -alF --group-directories-first -A'
-
-#-------------------------------------------------------------
-# The 'ls' family (this assumes you use a recent GNU ls).
-#-------------------------------------------------------------
-# Add colors for filetype and  human-readable sizes by default on 'ls':
-alias ls='ls -h --color'
-alias lx='ls -lXB'         #  Sort by extension.
-alias lk='ls -lSr'         #  Sort by size, biggest last.
-alias lt='ls -ltr'         #  Sort by date, most recent last.
-alias lc='ls -ltcr'        #  Sort by/show change time,most recent last.
-alias la='ls -ltur'        #  Sort by/show access time,most recent last.
-
-# The ubiquitous 'll': directories first, with alphanumeric sorting:
-alias lr='ll -R'           #  Recursive ls.
-alias tree='tree -Csuh'    #  Nice alternative to 'recursive ls' ...
 
 
 #-------------------------------------------------------------
